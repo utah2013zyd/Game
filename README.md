@@ -1,6 +1,6 @@
 Game
 ====
-OrzSDK contains the game engine code
+OrzSDK contains the game engine code\n
 Game directory contains the shooting game code
 
 the following three directories are created by the engine
