@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<project name="Framework_Base" default="build" basedir="./..">
+
+	
+	<property name="project.system.lib" value="dl"/>
+
+	<condition property="project.rebuild" value="true">
+		<isset property="is-windows"/>
+	</condition>
+
+	
+	<target name="build" >
+	
+		
+		<ant antfile="./build_template.xml" target="build" inheritAll="true" >
+		
+			<property name="project.name" value="Framework_Base"/>
+			<property name="project.dir" value=".\Framework_Base"/>
+			<property name="lib.type" value="shared"/>
+			<property name="subsystem" value="console"/>
+			
+			<property name="project.user.lib" value="Toolkit_Base"/>
+			<property name="project.dependencies.lib" value="tinyxml${d}_STL"/>
+			
+			<property name="project.define" value="FRAMEWORK_BASE_EXPORTS, TIXML_USE_STL"/>
+			
+			<property name="project.include" value="
+			.\Framework_Base\include;
+			."/>
+			
+			<property name="project.src" value="
+			src\Logic\*.cpp,
+			src\LogicConfiger\*.cpp,
+			src\System\*.cpp"/>
+		</ant>  
+
+	</target>
+</project>
+  

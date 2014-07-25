@@ -1,0 +1,7 @@
+LIBRARY	"Plugin"
+EXPORTS	
+	dllStartPlugin
+	dllStopPlugin
+	dllInitialisePlugin
+	dllShutdownPlugin
+	testFunction

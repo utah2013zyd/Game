@@ -1,0 +1,4 @@
+LIBRARY	"FCModel"
+EXPORTS	
+	dllStartPlugin
+	dllStopPlugin

@@ -1,0 +1,26 @@
+ORZ_PRE_BUILD_EVENT(View_OIS)
+
+SET( HEADER_PATH ${PROJECT_SOURCE_DIR}/include/${LIB_NAME} )
+SET( ORZ_${LIB_NAME}_DIR ${PROJECT_SOURCE_DIR}/orz/${LIB_NAME} )
+
+ADD_DEFINITIONS( -D${LIB_NAME_TOUPPER}_EXPORTS)
+INCLUDE_DIRECTORIES("include")
+
+
+
+
+
+ORZ_SET_PROJECT_FILES(lib\\\\\\\\include include/ .h)
+ORZ_SET_PROJECT_FILES(lib\\\\\\\\src src/ .cpp)
+ORZ_SET_PROJECT_FILES("orz" ../orz/${LIB_NAME}/ .h)
+   
+ADD_LIBRARY(${LIB_NAME} SHARED ${${LIB_NAME}_FILE})
+
+TARGET_LINK_LIBRARIES(${LIB_NAME} 
+debug OIS_d 
+optimized OIS
+Framework_Base
+Toolkit_Base
+)
+
+ORZ_POST_BUILD_EVENT()

@@ -1,0 +1,1 @@
+ORZ_FIND(Orz_AR View_AR bin/debug/View_AR.dll)

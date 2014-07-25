@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<project name="OrzSKD" default="test_all" basedir=".">
+
+
+
+  <taskdef resource="cpptasks.tasks"/>
+  <taskdef resource="net/sf/antcontrib/antcontrib.properties"/>
+  <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+  
+  
+  <property name="debug" value="true"/>
+  <property name="out.dir" value=".\out_file"/>
+  <property name="build.dir" value=".\build_file"/>
+  
+  
+
+  <target name="init">
+    <condition property="cc" value="msvc">
+      <os family="windows"/>
+    </condition>
+	
+    <condition property="cc" value="gcc">
+      <os family="unix"/>
+    </condition>
+
+    <condition property="is-windows" value="1">
+      <os family="windows"/>
+    </condition>
+
+    <condition property="is-unix" value="1">
+      <os family="unix"/>
+    </condition>
+
+
+    <condition property="is-debug" value="true">
+      <istrue value="${debug}"/>
+    </condition>
+
+    <condition property="is-release" value="true">
+        <isfalse value="${debug}"/>
+    </condition>
+
+    <condition property="debug.release" value="debug">
+      <isset property="is-debug"/>
+    </condition>
+    <property name="debug.release" value="release"/>
+	
+	
+    <condition property="_d" value="_d">
+      <isset property="is-debug"/>
+    </condition>
+	
+    <property name="_d" value=""/>
+	
+	
+	
+    <condition property="d" value="d">
+      <isset property="is-debug"/>
+    </condition>
+	
+    <property name="d" value=""/>
+
+    <condition property="project.dependencies.dir.lib" value=".\all_dependencies\vc90\lib">
+      <isset property="is-windows"/>
+    </condition>
+
+	
+	
+    <condition property="project.dependencies.dir.bin" value=".\all_dependencies\vc90\bin">
+      <isset property="is-windows"/>
+    </condition>
+	
+    <condition property="project.dependencies.dir.media" value=".\all_dependencies\media">
+      <isset property="is-windows"/>
+    </condition>
+
+
+    <condition property="project.dependencies.include" value=".\all_dependencies\include">
+      <isset property="is-windows"/>
+    </condition>
+
+    <property name="project.dependencies.include" value=".\all_dependencies\include"/>
+
+    <condition property="project.system.lib" value="kernel32, user32, gdi32, winspool, comdlg32, advapi32, shell32, ole32, oleaut32, uuid, odbc32, odbccp32">
+      <isset property="is-windows"/>
+    </condition>
+
+  </target>
+
+
+
+  <target name="build" depends="init, setup-all">
+ 
+    <ant antfile="./Toolkit_Base/build.xml" target="build" inheritAll="true" />
+    <ant antfile="./Framework_Base/build.xml" target="build" inheritAll="true" />
+    <ant antfile="./View_OGRE3D/build.xml" target="build" inheritAll="true" />
+    <ant antfile="./View_OIS/build.xml" target="build" inheritAll="true" />
+    <ant antfile="./View_Fmod/build.xml" target="build" inheritAll="true" />
+    <ant antfile="./Model_Base/build.xml" target="build" inheritAll="true" />
+    <ant antfile="./Controller_Base/build.xml" target="build" inheritAll="true" />
+    <ant antfile="./Controller_Win32/build.xml" target="build" inheritAll="true" />
+	
+  </target>
+
+   <target name="setup-all">
+   
+		<mkdir dir=".\${out.dir}\lib\${debug.release}"/>
+		<mkdir dir=".\${out.dir}\bin\${debug.release}"/>
+		<mkdir dir=".\${out.dir}\media"/>
+		
+		<copy todir=".\${out.dir}\bin\${debug.release}"  overwrite="false">
+			<fileset dir="${project.dependencies.dir.bin}\${debug.release}"/>
+		</copy>
+		
+		<copy todir=".\${out.dir}\media"  overwrite="false">
+			<fileset dir="${project.dependencies.dir.media}"/>
+		</copy>
+  </target>
+  
+  <target name="test_all" depends="build">
+   <ant antfile="./UnitTest/UnitTest.xml" target="test_all" inheritAll="true"/> 
+  </target>
+
+  <target name="update-dependencies" depends="init">
+    <echo message="${dependencies.url}"/>
+    <!-- 
+    <copy todir="DependenciesZip" flatten="true">
+      <resources>
+        <url url="${dependencies.url}${dependencies.zip}"/>
+      </resources>
+    </copy>
+    <unzip src="./DependenciesZip/${dependencies.zip}" dest="." />
+    -->
+  </target>
+ 
+  <target name="test-each">
+  </target>
+</project>

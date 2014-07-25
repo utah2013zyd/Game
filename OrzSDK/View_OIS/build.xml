@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<project name="VIEW_OIS" default="build" basedir="./..">
+
+	
+	<property name="project.system.lib" value="dl"/>
+
+	<condition property="project.rebuild" value="true">
+		<isset property="is-windows"/>
+	</condition>
+
+	
+	<target name="build" >
+	
+		
+		<ant antfile="./build_template.xml" target="build" inheritAll="true" >
+		
+			<property name="project.name" value="VIEW_OIS"/>
+			<property name="project.dir" value=".\VIEW_OIS"/>
+			<property name="lib.type" value="shared"/>
+			<property name="subsystem" value="console"/>
+			
+			<property name="project.user.lib" value="
+			Toolkit_Base,Framework_Base 
+			"/>
+			<property name="project.dependencies.lib" value="OIS${_d}"/>
+			<property name="project.define" value="VIEW_OIS_EXPORTS"/>
+			<property name="project.include" value="
+			.\VIEW_OIS\include;
+			."/>
+			
+			<property name="project.src" value="
+			src\*.cpp"/>
+		</ant>  
+
+	</target>
+</project>
+  

@@ -1,0 +1,4 @@
+LIBRARY	"FighterSimple"
+EXPORTS	
+	dllStartPlugin
+	dllStopPlugin

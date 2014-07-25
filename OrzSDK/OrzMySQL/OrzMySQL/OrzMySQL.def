@@ -1,0 +1,4 @@
+LIBRARY	"OrzMySQL"
+EXPORTS
+	dllStartDBPlugin
+	dllStopDBPlugin

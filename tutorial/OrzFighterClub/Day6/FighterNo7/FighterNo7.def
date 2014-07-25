@@ -1,0 +1,4 @@
+LIBRARY	"FighterNo7"
+EXPORTS	
+	dllStartPlugin
+	dllStopPlugin

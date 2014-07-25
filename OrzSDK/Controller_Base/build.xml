@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+
+<project name="Controller_Base" default="build" basedir="./..">
+
+	
+	<property name="project.system.lib" value="dl"/>
+
+	<condition property="project.rebuild" value="true">
+		<isset property="is-windows"/>
+	</condition>
+
+	
+	<target name="build" >
+	
+		
+		<ant antfile="./build_template.xml" target="build" inheritAll="true" >
+		
+			<property name="project.name" value="Controller_Base"/>
+			<property name="project.dir" value=".\Controller_Base"/>
+			<property name="lib.type" value="executable"/>
+			<property name="subsystem" value="console"/>
+			<property name="project.user.lib" value="
+			Toolkit_Base,Framework_Base, View_Fmod, View_OGRE3D, View_OIS 
+			"/>
+			
+			<property name="project.include" value="
+			.\Controller_Base\include;
+			."/>
+			
+			<property name="project.src" value="
+			src\*.cpp"/>
+		</ant>  
+
+	</target>
+</project>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<project name="View_Fmod" default="build" basedir="./..">
+
+	
+	<property name="project.system.lib" value="dl"/>
+
+	<condition property="project.rebuild" value="true">
+		<isset property="is-windows"/>
+	</condition>
+
+	
+	<target name="build" >
+	
+		
+		<ant antfile="./build_template.xml" target="build" inheritAll="true" >
+		
+			<property name="project.name" value="View_Fmod"/>
+			<property name="project.dir" value=".\View_Fmod"/>
+			<property name="lib.type" value="shared"/>
+			<property name="subsystem" value="console"/>
+			
+			<property name="project.user.lib" value="
+			Toolkit_Base,Framework_Base 
+			"/>
+			<property name="project.dependencies.lib" value="fmodex_vc"/>
+			<property name="project.define" value="VIEW_FMOD_EXPORTS"/>
+			
+			<property name="project.include" value="
+			.\View_Fmod\include;
+			."/>
+			
+			<property name="project.src" value="
+			src\*.cpp"/>
+		</ant>  
+
+	</target>
+</project>
+  

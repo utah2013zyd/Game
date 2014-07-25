@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<project name="os_init" default="init" basedir=".">
+	<target name="help">
+	<echo>
+		project.name = ${project.name};
+		debug = ${debug};
+		lib.type = ${lib.type};
+		out.dir = ${out.dir};
+		cc = ${cc};
+		is-windows = ${is-windows};
+		debug.release = ${debug.release};
+		_d = ${_d};
+		is-debug = ${is-debug};
+		is-release = ${is-release};
+		is-shared = ${is-shared};
+		is-windows-shared = ${is-windows-shared};
+		
+	</echo>
+	</target>
+</project>

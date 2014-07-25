@@ -1,0 +1,4 @@
+LIBRARY	"Model_Base"
+EXPORTS	
+	dllStartPlugin
+	dllStopPlugin

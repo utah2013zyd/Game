@@ -1,0 +1,12 @@
+<?xml version="1.0" standalone="yes"?>
+<OrzConfig>
+  <Win32>
+    <plugin name ="Model_Base" />
+   <!-- <plugin name ="Tutorial" /> -->
+   <!-- <theater type ="TheaterBase" name="main" active ="Tutorial" > -->
+    <theater type ="TheaterBase" name="main" >
+           <!--  <director type="TutorialDirector" name="Tutorial"/> -->
+    </theater>
+  </Win32>
+  
+</OrzConfig>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+
+<project name="View_OGRE3D" default="build" basedir="./..">
+
+	
+	<property name="project.system.lib" value="dl"/>
+
+	<condition property="project.rebuild" value="true">
+		<isset property="is-windows"/>
+	</condition>
+
+	
+	<target name="build" >
+	
+		
+		<ant antfile="./build_template.xml" target="build" inheritAll="true" >
+		
+			<property name="project.name" value="View_OGRE3D"/>
+			<property name="project.dir" value=".\View_OGRE3D"/>
+			<property name="lib.type" value="shared"/>
+			<property name="subsystem" value="console"/>
+			
+			<property name="project.user.lib" value="
+			Toolkit_Base,Framework_Base 
+			"/>
+			<property name="project.dependencies.lib" value="OgreMain${_d}, CEGUIBase${_d}, OgreGUIRenderer${_d}"/>
+			<property name="project.define" value="VIEW_OGRE3D_EXPORTS"/>
+			
+			<property name="project.include" value="
+			${project.dependencies.include}\Ogre;
+			${project.dependencies.include}\Ogre\CEGUI;
+			.\View_OGRE3D\include;
+			."/>
+			
+			<property name="project.src" value="
+			src\*.cpp"/>
+		</ant>  
+
+	</target>
+</project>
+  

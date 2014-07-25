@@ -1,0 +1,12 @@
+----------------------------------------------------------------------
+Ogre Archive Plugin with support for Password Protected Zip
+----------------------------------------------------------------------
+Based on a plugin for password protected zip that monster wrote some times ago 
+(see http://www.ogre3d.org/phpBB2/viewtopic.php?t=6235), i've adapted it for
+the new ogre archive system.
+
+Uses ZipArchive library (http://www.artpol-software.com/index_zip.html)
+
+This software is mojito-ware. if we ever met, you own me a mojito.
+
+ekt@libero.it

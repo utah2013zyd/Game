@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<project name="TestAll" default="test_all" basedir=".">
+
+
+	<property name="project.system.lib" value="dl"/>
+
+	<condition property="project.rebuild" value="true">
+		<isset property="is-windows"/>
+	</condition>
+    	
+	<target name="build_unittest">
+	
+	
+		
+		<ant antfile="./build_template.xml" target="build" inheritAll="true" >
+		
+			<property name="project.name" value="UnitTest"/>
+			<property name="project.dir" value=".\UnitTest"/>
+			<property name="lib.type" value="executable"/>
+			<property name="subsystem" value="console"/>
+			<property name="project.user.lib" value="
+			View_Fmod, View_OGRE3D, View_OIS, Framework_Base, Toolkit_Base
+			"/>
+			
+			<property name="project.include" value="
+			.\UnitTest\include;
+			."/>
+			
+			<property name="project.src" value="src\*.cpp"/>
+		</ant>  
+	</target>
+	
+	
+	<target name="test_all" depends="build_unittest">
+		
+	</target>
+</project>

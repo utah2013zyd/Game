@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<project name="Toolkit_Base" default="build" basedir="./..">
+
+	
+	<property name="project.system.lib" value="dl"/>
+
+	<condition property="project.rebuild" value="true">
+		<isset property="is-windows"/>
+	</condition>
+
+	
+	<target name="build" >
+	
+		
+		<ant antfile="./build_template.xml" target="build" inheritAll="true" >
+		
+			<property name="project.name" value="Toolkit_Base"/>
+			<property name="project.dir" value=".\Toolkit_Base"/>
+			<property name="lib.type" value="shared"/>
+			<property name="subsystem" value="console"/>
+			
+			<property name="project.define" value="TOOLKIT_BASE_EXPORTS"/>
+			
+			<property name="project.include" value="
+			.\Toolkit_Base\include;
+			."/>
+			
+			<property name="project.src" value="
+			src\LogManager\*.cpp,
+			src\IDManager\*.cpp,
+			src\EventSystem\*.cpp,
+			src\DynLibManager\*.cpp,
+			src\TimerManager\*.cpp"/>
+		</ant>  
+
+	</target>
+</project>
+  

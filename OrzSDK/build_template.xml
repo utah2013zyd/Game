@@ -1,0 +1,245 @@
+<?xml version="1.0"?>
+<project name="OrzCore" default="build" basedir=".">
+
+   	<target name="windows_shared_put_out" if = "is-windows-shared">
+		
+		
+		<exec executable="cmd" failonerror="true"  dir="${build.dir}\${debug.release}">
+			<arg value="/c"/>
+			<arg value="mt.exe"/>
+			<arg value="-manifest"/>
+			<arg value="${project.name}.dll.manifest"/>
+			<arg value="-outputresource:${project.name}.dll;2"/>
+		</exec>
+		
+   		<copy file="${build.dir}\${debug.release}\${project.name}.dll" todir=".\${out.dir}\bin\${debug.release}" overwrite="true" />
+      	<copy file="${build.dir}\${debug.release}\${project.name}.lib" todir=".\${out.dir}\lib\${debug.release}" overwrite="true" />
+		
+    </target>
+    
+    <target name="windows_executable_put_out" if = "is-windows-executable">
+	
+		
+		<exec executable="cmd" failonerror="true"  dir="${build.dir}\${debug.release}">
+			<arg value="/c"/>
+			<arg value="mt.exe"/>
+			<arg value="-manifest"/>
+			<arg value="${project.name}.exe.manifest"/>
+			<arg value="-outputresource:${project.name}.exe;1"/>
+		</exec>
+		
+   		<copy file="${build.dir}\${debug.release}\${project.name}.exe" todir=".\${out.dir}\bin\${debug.release}" overwrite="true" />
+   		
+		
+		
+    </target>
+    
+     <target name="windows_static_put_out" if = "is-windows-static">
+   		<copy file="${build.dir}\${debug.release}\${project.name}.lib" todir=".\${out.dir}\lib\${debug.release}" overwrite="true" />
+    </target>
+	
+   	<target name="windows_put_out" if = "is-windows" depends="windows_shared_put_out, windows_static_put_out, windows_executable_put_out">
+	</target>
+	
+	<target name="unix_shared_put_out" if = "is-unix-shared">
+   		<copy file="${build.dir}\${debug.release}\lib${project.name}.so" todir=".\lib\${debug.release}" overwrite="true" />
+    </target>
+    
+    <target name="unix_executable_put_out" if = "is-unix-executable">
+    </target>
+    
+     <target name="unix_static_put_out" if = "is-unix-static">
+   		<copy file="${build.dir}\${debug.release}\lib${project.name}.a" todir=".\lib\${debug.release}" overwrite="true" />
+    </target>
+    
+	
+   	<target name="unix_put_out" unless = "is-windows" depends="unix_shared_put_out, unix_static_put_out, unix_executable_put_out">
+   
+	</target>
+	
+   
+   
+   
+   
+	<target name="setup" >
+	
+	 	<condition property="is-static" value="1">
+              <equals arg1="${lib.type}" arg2="static"/>
+        </condition>
+        
+        <condition property="is-shared" value="1">
+              <equals arg1="${lib.type}" arg2="shared"/>
+        </condition>
+        
+        <condition property="is-executable" value="1">
+              <equals arg1="${lib.type}" arg2="executable"/>
+        </condition>
+        
+	
+		<condition property="is-windows-shared" value="1">
+			<and>
+				<isset property="is-windows"/>
+				<isset property="is-shared"/>
+			</and>
+		</condition>
+		
+		<condition property="is-windows-executable" value="1">
+			<and>
+				<isset property="is-windows"/>
+				<isset property="is-executable"/>
+			</and>
+		</condition>
+		
+		<condition property="is-windows-static" value="1">
+			<and>
+				<isset property="is-windows"/>
+				<isset property="is-static"/>
+			</and>
+		</condition>
+		
+		<condition property="is-unix-shared" value="1">
+			<and>
+				<isset property="is-unix"/>
+				<isset property="is-shared"/>
+			</and>
+		</condition>
+		
+		<condition property="is-unix-executable" value="1">
+			<and>
+				<isset property="is-unix"/>
+				<isset property="is-executable"/>
+			</and>
+		</condition>
+		
+		
+		<condition property="is-unix-static" value="1">
+			<and>
+				<isset property="is-unix"/>
+				<isset property="is-static"/>
+			</and>
+		</condition>
+		<condition property="is-unix-executable" value="1">
+			<and>
+				<isset property="is-unix"/>
+				<isset property="is-executable"/>
+			</and>
+		</condition>
+		
+		
+		
+		
+		<condition property="use-stdlib" value="1">
+			<or>
+				<isset property="is-unix-executable"/>
+				<isset property="is-unix-shared"/>
+			</or>
+		</condition>
+		
+		
+		<condition property="project.user.dir" value=".\lib\${debug.release}">
+			<isset property="is-windows"/>
+		</condition>
+		
+		<property name="project.user.dir" value="${build.dir}\${debug.release}"/>
+		
+		
+		
+		<condition property="executable.extension" value=".exe">
+			<isset property="is-windows"/>
+		</condition>
+		
+		<property name="executable.extension" value=""/>
+		
+		
+		<condition property="project.rebuild" value="false">
+			<not>
+				<isset property="project.rebuild"/>
+			</not>
+		</condition>
+		
+		
+		
+	
+		
+	</target>
+	
+
+      
+	
+	<target name="build"  depends="setup" >
+	
+	
+		
+	    <ant antfile="os_init.xml" target="help" inheritAll="true"/>
+	    
+	    
+		<mkdir dir="${build.dir}\obj\${debug.release}\${project.name}"/>
+		<mkdir dir="${build.dir}\${debug.release}"/>
+		<echo message="${lib.type}"/>
+		<echo message="${project.user.lib}!!!"/>
+		<echo message="${project.dependencies.dir.lib}"/>
+		<echo message="${project.dependencies.dir.bin}"/>
+		
+		
+		<echo message="${project.include}"/>
+		
+		<echo message="${project.dependencies.lib}"/>
+		
+	<cc name="${cc}" 
+	subsystem="${subsystem}" 
+	debug="${debug}" 
+	outfile="${build.dir}\${debug.release}\${project.name}" 
+	exceptions="true" 
+	rtti="true" 
+	rebuild="${project.rebuild}" 
+	multithreaded="true" 
+	objdir="${build.dir}\obj\${debug.release}\${project.name}"  
+	outtype="${lib.type}" >
+
+		
+		<defineset define="${project.define}" if="project.define" />
+		<includepath path="${project.include}"/>
+		<fileset dir="${project.dir}" includes="${project.src}"/>
+		
+
+		
+	
+		<defineset define="_DEBUG" if="is-debug"/>
+		<defineset define="NDEBUG" if="is-release"/>
+		<defineset define="WIN32" if="is-windows"/>
+		<defineset define="RTC1" if="is-windows"/>
+		<defineset define="_WINDOWS" if="is-windows"/>
+		<defineset define="_USRDLL" if="is-shared" />
+		<defineset define="UNICODE"/>
+		<defineset define="_UNICODE"/>
+
+		
+		
+		<linkerarg value='/DEF:"${project.def}"' if="project.def"/>
+		
+		<linkerarg value="-lstdc++" if="use-stdlib" />
+		 
+		<includepath path="${project.dependencies.include}"/>
+		<fileset dir="${project.dependencies.dir.lib}/${debug.release}" includes="*.lib"/>
+		
+		<libset dir="${project.dependencies.dir.lib}/${debug.release}" libs="${project.dependencies.lib}" if="project.dependencies.lib"/>
+		<libset dir="${project.dependencies.dir.lib}" libs="${project.dependencies.lib}" if="project.dependencies.lib"/>
+		<libset dir="${out.dir}\lib\${debug.release}" libs="${project.user.lib}" if="project.user.lib"/>
+		
+		<syslibset libs="${project.system.lib}" if="project.system.lib"/>
+		
+	</cc>
+  	
+  	<antcall target="windows_put_out"/>
+  	<antcall target="unix_put_out"/>
+    
+
+	</target>
+	
+	<target name="clean" >
+	
+	
+	
+	</target>
+</project>
+    
