@@ -18,9 +18,10 @@ void FCDirector::doEnable(void)
 	FCKnowledge::getSingleton().setDirectorName(this->getName());
 	//Ogre::ResourceGroupManager::getSingleton().addResourceLocation("../../OrzTowerDefense/media", "FileSystem", "General");
 	using namespace Ogre;
-	OgreGraphicsManager::getSingleton().getCamera()->setPosition(200.f, 70.f, 200.f);
+	//OgreGraphicsManager::getSingleton().getCamera()->setPosition(200.f, 70.f, 200.f);
 	//OgreGraphicsManager::getSingleton().getCamera()->setOrientation(Ogre::Quaternion(0.86f, -0.5f, 0.f, 0.f));
 	_camCtrl.reset(new CameraController(OgreGraphicsManager::getSingleton().getCamera()));
+	//OgreGraphicsManager::getSingleton().getSceneManager()->createSceneNode()->attachObject(OgreGraphicsManager::getSingleton().getCamera());
 	enableUpdate();
 
 

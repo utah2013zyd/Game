@@ -49,7 +49,7 @@ void FCBullet::doEnable(void)
 	//	emitter->setPosition(Vector3(i == 0 ? -50:50, 0, 0));	
 	//}
 	//_node->attachObject(thrusters);
-	ParticleSystem* _thrusters = sm->createParticleSystem(this->getName()+"Bullets", "bullet");
+	_thrusters = sm->createParticleSystem(this->getName()+"Bullets", "bullet");
 	_node->attachObject(_thrusters);
 
 	_node->setVisible(false);
@@ -74,10 +74,11 @@ void FCBullet::doExecute(Event *evt)
 {
 	if(FCEvents::equal(evt, FCEvents::FIRE))
 	{
+
 		_active = true;
 		_logic_process_event(EvBulletFire());
 		_node->setVisible(true);
-					
+			
 		//_node->attachObject(_entity);
 
 		//_thrusters->setVisible(true);

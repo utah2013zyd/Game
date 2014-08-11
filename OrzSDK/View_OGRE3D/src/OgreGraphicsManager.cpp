@@ -35,6 +35,10 @@ Ogre::SceneManager * OgreGraphicsManager::getSceneManager(void)
 {
 	return _impl->getSceneManager();
 }
+Ogre::Viewport * OgreGraphicsManager::getViewport(void)
+{
+	return _impl->getViewport();
+}
 Ogre::RenderWindow * OgreGraphicsManager::getRenderWindow(void)
 {
 	return _impl->getRenderWindow();

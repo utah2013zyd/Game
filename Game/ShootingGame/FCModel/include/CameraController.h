@@ -5,14 +5,14 @@ namespace Orz
 {
 
 
-class CameraController /*:public KeyListener, public MouseListener*/
+class CameraController :/*public KeyListener*/ public MouseListener
 {
 public:
 	CameraController(Ogre::Camera * camera);
 	virtual ~CameraController(void);
-	//bool onMousePressed(const MouseEvent & evt);
-	//bool onMouseReleased(const MouseEvent & evt);
-	//bool onMouseMoved(const MouseEvent & evt);
+	bool onMousePressed(const MouseEvent & evt);
+	bool onMouseReleased(const MouseEvent & evt);
+	bool onMouseMoved(const MouseEvent & evt);
 
 	//bool onKeyPressed(const KeyEvent & evt);
 	//bool onKeyReleased(const KeyEvent & evt);

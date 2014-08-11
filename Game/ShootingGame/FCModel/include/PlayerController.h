@@ -7,7 +7,7 @@ namespace Orz
 {
 
 class PlayerController :
-	public KeyListener, public MouseListener, public Actor
+	public KeyListener, public MouseListener,public JoyStickListener, public Actor
 {
 public:
 	PlayerController(const std::string & name = IDManager::BLANK, const std::string & fighterName = IDManager::BLANK);
@@ -25,6 +25,10 @@ public:
 
 	bool onKeyPressed(const Orz::KeyEvent &evt);
 	bool onKeyReleased(const Orz::KeyEvent &evt);
+
+	bool onButtonPressed(const Orz::JoyStickEvent &evt);
+	bool onButtonReleased(const Orz::JoyStickEvent &evt);
+	bool onAxisMoved(const Orz::JoyStickEvent &evt);
 
 private:
 	std::string _fighterName;

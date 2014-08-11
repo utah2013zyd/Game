@@ -163,6 +163,10 @@ namespace Orz{
 		MB_Button3, MB_Button4,	MB_Button5, MB_Button6,	MB_Button7
 	};
 
+	enum JoyStickButtonID
+	{
+		JB_A = 0, JB_B, JB_X, JB_Y, JB_LB, JB_RB, JB_Back, JB_Start
+	};
 
 	class KeyEvent
 	{
@@ -289,6 +293,30 @@ namespace Orz{
 			int _button;
 		};
 	};
+
+	class JoyStickEvent{
+	public:
+		inline JoyStickEvent(int button): _button(button) {}
+		inline JoyStickEvent(int axis, int abs): _axis(axis), _absAxis(abs) {}
+		int getAxis() const
+		{
+			return _axis;
+		}
+		int getAbsAxis() const
+		{
+			return _absAxis;
+		}
+		JoyStickButtonID getButton(void) const
+		{
+			return static_cast<JoyStickButtonID>(_button);
+		}
+
+	private:
+		int _axis;
+		int _absAxis;
+		int _button;
+	};
+
 	typedef std::pair<size_t, size_t> MouseState;
 
 
@@ -326,6 +354,20 @@ namespace Orz{
 		bool _always;
 	};
 
+	class _OrzFrameworkBaseExport JoyStickListener
+	{
+	public:
+		inline JoyStickListener(bool always = false):_always(always){}
+		inline void setAlways(bool always) {_always = always;}
+		inline bool getAlways(void) const {return _always; }
+		virtual bool onButtonPressed(const JoyStickEvent & evt) = 0;
+		virtual bool onButtonReleased(const JoyStickEvent & evt) = 0;
+		virtual bool onAxisMoved(const JoyStickEvent & evt) = 0;
+		virtual ~JoyStickListener(void){}
+
+	private:
+		bool _always;
+	};
 	//class IInputManagerImpl;
 	//template class _OrzFrameworkBaseExport boost::scoped_ptr<IInputManagerImpl>;
 
@@ -336,6 +378,7 @@ namespace Orz{
 
 		typedef std::vector<MouseListener *> MouseListenerList;
 		typedef std::vector<KeyListener *> KeyListenerList;
+		typedef std::vector<JoyStickListener *> JoyStickListenerList;
 	
 	public:
 
@@ -351,16 +394,23 @@ namespace Orz{
 		///移除键盘监听者
 		void removeKeyListener(KeyListener * listener);
 	
+		void addJoyStickListener(JoyStickListener* listener);
+
+		void removeJoyStickListener(JoyStickListener* listener);
 	
 		void _mousePressed(const MouseEvent & evt);
 		void _mouseReleased(const MouseEvent & evt);
 		void _mouseMoved(const MouseEvent & evt);
 		void _keyPressed(const KeyEvent & evt);
 		void _keyReleased(const KeyEvent & evt);
+		void _joystickPressed(const JoyStickEvent & evt);
+		void _joystickReleased(const JoyStickEvent & evt);
+		void _joystickAxisMoved(const JoyStickEvent & evt);
 
 	private:
 		MouseListenerList _mouseListener;
 		KeyListenerList _keyListener;
+		JoyStickListenerList _joystickListener;
 	};
 
 

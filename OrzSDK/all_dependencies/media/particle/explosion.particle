@@ -1,0 +1,230 @@
+
+particle_system explosion
+{
+	quota	2000
+	material	ParticleUniverse/ExplosionFire
+	particle_width	10
+	particle_height	10
+	cull_each	false
+	renderer	billboard
+	billboard_type	point
+
+	emitter Ellipsoid
+	{
+		angle	73.17
+		colour	1 1 1 1
+		colour_range_start	1 1 1 1
+		colour_range_end	1 1 1 1
+		direction	0 0 -1
+		emission_rate	20
+		position	0.590229 14.6031 -13.8853
+		velocity	13.77
+		velocity_min	13.77
+		velocity_max	11.84
+		time_to_live	2
+		time_to_live_min	2
+		time_to_live_max	2
+		duration	0
+		duration_min	0
+		duration_max	0
+		repeat_delay	0
+		repeat_delay_min	0
+		repeat_delay_max	0
+		width	10
+		height	10
+		depth	10
+	}
+
+	affector ColourInterpolator
+	{
+		colour0	1 1 0.95 1
+		time0	0
+		colour1	0.18 0.05 0.01 1
+		time1	0.5
+		colour2	0 0 0 1
+		time2	1
+		colour3	0.5 0.5 0.5 0
+		time3	1
+		colour4	0.5 0.5 0.5 0
+		time4	1
+		colour5	0.5 0.5 0.5 0
+		time5	1
+	}
+
+	affector Scaler
+	{
+		rate	20
+	}
+}
+
+particle_system explosion2
+{
+	quota	50
+	material	ParticleUniverse/Nucleus
+	particle_width	15
+	particle_height	15
+	cull_each	false
+	renderer	billboard
+	billboard_type	point
+
+	emitter Point
+	{
+		name	explosion
+                angle	360
+		colour	1 1 1 1
+		colour_range_start	1 1 1 1
+		colour_range_end	1 1 1 1
+		direction	0 -1 0
+		emission_rate	100
+		position	0 0 0
+		velocity	2
+		velocity_min	2
+		velocity_max	2
+		time_to_live	5
+		time_to_live_min	5
+		time_to_live_max	5
+		duration	0
+		duration_min	0
+		duration_max	0
+		repeat_delay	0
+		repeat_delay_min	0
+		repeat_delay_max	0
+	}
+
+	affector ColourInterpolator
+	{
+		colour0	0.5 0.4 0.2 1
+		time0	0
+		colour1	0.5 0.2 0.05 1
+		time1	0.1
+		colour2	0.1 0.1 0.1 1
+		time2	0.2
+		colour3	0 0 0 1
+		time3	1
+		colour4	0.5 0.5 0.5 0
+		time4	1
+		colour5	0.5 0.5 0.5 0
+		time5	1
+	}
+
+	affector Rotator
+	{
+		rotation_speed_range_start	0.1
+		rotation_speed_range_end	1
+		rotation_range_start	1
+		rotation_range_end	90
+	}
+
+	affector Scaler
+	{
+		rate	5
+	}
+}
+
+particle_system explosion3
+{ 
+	quota	8486
+	material	ParticleUniverse/Debris
+	particle_width	3
+	particle_height	20
+	cull_each	false
+	renderer	billboard
+	billboard_type	point
+
+	emitter Point
+	{
+		angle	360
+		colour	1 1 1 1
+		colour_range_start	1 1 1 1
+		colour_range_end	1 1 1 1
+		direction	0 -1 0
+		emission_rate	100
+		position	0 0 0
+		velocity	100
+		velocity_min	100
+		velocity_max	180
+		time_to_live	5
+		time_to_live_min	5
+		time_to_live_max	5
+		duration	0
+		duration_min	0
+		duration_max	0
+		repeat_delay	0
+		repeat_delay_min	0
+		repeat_delay_max	0
+	}
+
+	affector ColourInterpolator
+	{
+		colour0	1 1 1 1
+		time0	0
+		colour1	0 0 0 1
+		time1	1
+		colour2	0.5 0.5 0.5 0
+		time2	1
+		colour3	0.5 0.5 0.5 0
+		time3	1
+		colour4	0.5 0.5 0.5 0
+		time4	1
+		colour5	0.5 0.5 0.5 0
+		time5	1
+	}
+
+	affector LinearForce
+	{
+		force_vector	0 -100 0
+		force_application	add
+	}
+}
+
+particle_system explosion4
+{
+	emit_emitter_quota 	6
+	material	ParticleUniverse/Nucleus
+	particle_width	100
+	particle_height	100
+	cull_each	false
+	renderer	billboard
+	billboard_type	point
+        
+        emitter Point
+        {
+         	name            mainEmitter
+                emit_emitter    explosion
+                emission_rate	6
+                angle           80
+                time_to_live    10
+                velocity        300
+        }
+        emitter Point
+	{
+		name	explosion
+                angle	360
+		colour	1 1 1 1
+		colour_range_start	1 1 1 1
+		colour_range_end	1 1 1 1
+		direction	0 -1 0
+		emission_rate	100
+		position	0 0 0
+		velocity	2
+		velocity_min	2
+		velocity_max	2
+		time_to_live	5
+		time_to_live_min	5
+		time_to_live_max	5
+		duration	0
+		duration_min	0
+		duration_max	0
+		repeat_delay	0
+		repeat_delay_min	0
+		repeat_delay_max	0
+	}
+
+        affector LinearForce
+	{
+		force_vector	0 -100 0
+		force_application	add
+	}
+                
+                
+}

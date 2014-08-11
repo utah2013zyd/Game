@@ -7,13 +7,11 @@
 
 #include <Ogre/OIS/OIS.h>
 
-
-
 namespace Orz
 {
 
 	class _OrzViewOISPrivate OISInputManagerImpl:
-		public OIS::KeyListener,public OIS::MouseListener, public Orz::KeyListener, public Orz::WindowListener
+		public OIS::KeyListener,public OIS::MouseListener, public OIS::JoyStickListener, public Orz::KeyListener, public Orz::WindowListener
 
 	{
 	public:
@@ -62,14 +60,24 @@ namespace Orz
 				}
 			}
 			_oisManager = OIS::InputManager::createInputSystem(paramList);
-			_keyboard = static_cast<OIS::Keyboard*>(_oisManager->createInputObject( OIS::OISKeyboard, true ));
-			_mouse = static_cast<OIS::Mouse*>(_oisManager->createInputObject( OIS::OISMouse, true ));
-			const OIS::MouseState &ms = _mouse->getMouseState();
-			ms.width = static_cast<int>(wp->getWidth());
-			ms.height = static_cast<int>(wp->getHeight());
-
-			_keyboard->setEventCallback(this);
-			_mouse->setEventCallback(this);
+			if(_oisManager->numKeyboards() > 0)
+			{
+				_keyboard = static_cast<OIS::Keyboard*>(_oisManager->createInputObject( OIS::OISKeyboard, true ));
+				_keyboard->setEventCallback(this);
+			}
+			if(_oisManager->numMice() > 0)
+			{
+				_mouse = static_cast<OIS::Mouse*>(_oisManager->createInputObject( OIS::OISMouse, true ));
+				_mouse->setEventCallback(this);
+				const OIS::MouseState &ms = _mouse->getMouseState();
+				ms.width = static_cast<int>(wp->getWidth());
+				ms.height = static_cast<int>(wp->getHeight());
+			}
+			if(_oisManager->numJoySticks() > 0)			
+			{	
+				_joystick = static_cast<OIS::JoyStick*>(_oisManager->createInputObject(OIS::OISJoyStick, true));
+				_joystick->setEventCallback(this);
+			}
 			_inputManager->addKeyListener(this);
 
 			return true;
@@ -79,14 +87,24 @@ namespace Orz
 			_inputManager = NULL;
 			if(_oisManager)
 			{
-
-				_oisManager->destroyInputObject( _mouse );
-				_oisManager->destroyInputObject( _keyboard );
+				if(_mouse)
+				{	
+					_oisManager->destroyInputObject( _mouse );
+					_mouse = NULL;
+				}
+				if(_keyboard)
+				{
+					_oisManager->destroyInputObject( _keyboard );
+					_keyboard = NULL;
+				}
+				if(_joystick)
+				{
+					_oisManager->destroyInputObject(_joystick);
+					_joystick = NULL;
+				}
 				OIS::InputManager::destroyInputSystem(_oisManager);
 				_oisManager = NULL;//y::TDiJoyConnecter& Orz::Joy::TDiJoyConnecter::getSingleton(): Assertion `_singleton' failed.
 
-				_mouse = NULL;
-				_keyboard = NULL;
 			}
 
 
@@ -95,8 +113,12 @@ namespace Orz
 		bool update(TimeType)
 		{
 
-			_keyboard->capture();
-			_mouse->capture();
+			if(_keyboard)
+				_keyboard->capture();
+			if(_mouse)
+				_mouse->capture();
+			if(_joystick)	
+				_joystick->capture();
 			return true;
 
 		}
@@ -171,12 +193,44 @@ namespace Orz
 			return true;
 		}
 
+		virtual bool buttonPressed(const OIS::JoyStickEvent &arg, int button)
+		{
+			//std::cout  << axis<<"         " << arg.state.mAxes[axis].abs << std::endl;
+			//std::cout << "button pressed: " << button << std::endl;
+			if(_inputManager)
+				_inputManager->_joystickPressed(JoyStickEvent(button));
+			return true;
+		}
+
+		virtual bool buttonReleased(const OIS::JoyStickEvent &arg, int button)
+		{
+			if(_inputManager)
+				_inputManager->_joystickReleased(JoyStickEvent(button));
+			return true;
+		}
+
+		// d pad left/right 0
+		// d pad up/down 1
+		// right joystick up/down 2
+		// right joystick left/right 3
+		// RT 4
+		virtual bool axisMoved(const OIS::JoyStickEvent &arg, int axis)
+		{
+			//std::cout  << axis<<"         " << arg.state.mAxes[axis].abs << std::endl;
+			if(_inputManager)
+				_inputManager->_joystickAxisMoved(JoyStickEvent(axis, arg.state.mAxes[axis].abs));
+			return true;
+		}
+
+
+
 	private:
 
 		IInputManager * _inputManager;
 		OIS::InputManager  * _oisManager;
 		OIS::Mouse* _mouse;
 		OIS::Keyboard* _keyboard;
+		OIS::JoyStick* _joystick;
 
 	};
 

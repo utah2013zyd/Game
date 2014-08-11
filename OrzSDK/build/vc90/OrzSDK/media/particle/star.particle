@@ -1,0 +1,83 @@
+
+particle_system star
+{
+	quota	400
+	material	ParticleUniverse/Star
+	particle_width	2
+	particle_height	2
+	cull_each	false
+	renderer	billboard
+	billboard_type	point
+
+	emitter Point
+	{
+		angle	10.67
+		colour	1 1 1 1
+		colour_range_start	1 1 1 1
+		colour_range_end	1 1 1 1
+		direction	0 0 1
+		emission_rate	40
+		position	0 0 300
+		velocity	50
+		velocity_min	50
+		velocity_max	50
+		time_to_live	5
+		time_to_live_min	5
+		time_to_live_max	5
+		duration	0
+		duration_min	0
+		duration_max	0
+		repeat_delay	0
+		repeat_delay_min	0
+		repeat_delay_max	0
+	}
+
+
+	affector ColourInterpolator
+	{
+		colour0	0 0 0 0
+		time0	0
+		colour1	0 0 0 0
+		time1	0.6
+		colour2	1 1 1 0
+		time2	0.65
+
+	}
+}
+
+particle_system star2
+{
+	quota	200
+	material	ParticleUniverse/Star
+	particle_width	2
+	particle_height	2
+	cull_each	false
+	renderer	billboard
+	billboard_type	point
+
+	emitter Box
+	{
+		angle	180
+		colour	1 1 1 1
+		colour_range_start	1 1 1 1
+		colour_range_end	1 1 1 1
+		direction	0 0 1
+		emission_rate	20
+		position	0 0 300
+		velocity	0
+		velocity_min	0
+		velocity_max	0
+		time_to_live	5
+		time_to_live_min	5
+		time_to_live_max	5
+		duration	0
+		duration_min	0
+		duration_max	0
+		repeat_delay	0
+		repeat_delay_min	0
+		repeat_delay_max	0
+		width	500
+		height	500
+		depth	500
+	}
+}

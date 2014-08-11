@@ -47,6 +47,15 @@ void IInputManager::removeKeyListener(KeyListener * listener)
 {
 	_keyListener.erase(std::remove(_keyListener.begin(), _keyListener.end(), listener), _keyListener.end());
 }
+void IInputManager::addJoyStickListener(JoyStickListener * listener)
+{
+	_joystickListener.push_back(listener);
+}
+void IInputManager::removeJoyStickListener(JoyStickListener * listener)
+{
+	_joystickListener.erase(std::remove(_joystickListener.begin(), _joystickListener.end(), listener), _joystickListener.end());
+}
+
 void IInputManager::_mousePressed(const MouseEvent & evt)
 {
 	bool ret = false;
@@ -112,6 +121,42 @@ void IInputManager::_keyReleased(const KeyEvent & evt)
 			ret = listener->onKeyReleased(evt) || ret;
 		}
 	}	
+}
+
+void IInputManager::_joystickPressed(const JoyStickEvent & evt)
+{
+	bool ret = false;
+	BOOST_FOREACH(JoyStickListener * listener, _joystickListener)
+	{
+		if(!ret || listener->getAlways())
+		{
+			ret = listener->onButtonPressed(evt) || ret;
+		}
+	}
+}
+
+void IInputManager::_joystickReleased(const Orz::JoyStickEvent &evt)
+{
+	bool ret = false;
+	BOOST_FOREACH(JoyStickListener * listener, _joystickListener)
+	{
+		if(!ret || listener->getAlways())
+		{
+			ret = listener->onButtonReleased(evt) || ret;
+		}
+	}
+}
+
+void IInputManager::_joystickAxisMoved(const Orz::JoyStickEvent &evt)
+{
+	bool ret = false;
+	BOOST_FOREACH(JoyStickListener * listener, _joystickListener)
+	{
+		if(!ret || listener->getAlways())
+		{
+			ret = listener->onAxisMoved(evt) || ret;
+		}
+	}
 }
 //void IInputManager::mouseVisitor(MouseVisitorFun fun)
 //{

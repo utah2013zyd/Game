@@ -1,9 +1,10 @@
+
 particle_system bullet
 {
 	quota	2000
 	material	PUMediaPack/Flare_04
-	particle_width	4.356
-	particle_height	46.31
+	particle_width	1.356
+	particle_height	26.31
 	cull_each	false
 	renderer	billboard
 	billboard_type	oriented_self
@@ -15,8 +16,8 @@ particle_system bullet
 		colour_range_start	0.3 0.65 0.76 1
 		colour_range_end	0.3 0.65 0.76 1
 		direction	0 0 1
-		emission_rate	1000
-		position	-30 0 -20
+		emission_rate	1424
+		position	-30 0 0
 		velocity	101.7
 		velocity_min	101.7
 		velocity_max	101.7
@@ -29,9 +30,9 @@ particle_system bullet
 		repeat_delay	0
 		repeat_delay_min	0
 		repeat_delay_max	0
-		width	5.407
-		height	9.63
-		depth	5.33
+		width	9.407
+		height	9.407
+		depth	23.33
 	}
 
 	emitter Cylinder
@@ -41,8 +42,8 @@ particle_system bullet
 		colour_range_start	0.3 0.65 0.76 1
 		colour_range_end	0.3 0.65 0.76 1
 		direction	0 0 1
-		emission_rate	1000
-		position	30 0 -20
+		emission_rate	1424
+		position	30 0 0
 		velocity	101.7
 		velocity_min	101.7
 		velocity_max	101.7
@@ -55,8 +56,8 @@ particle_system bullet
 		repeat_delay	0
 		repeat_delay_min	0
 		repeat_delay_max	0
-		width	5.407
-		height	9.63
-		depth	5.33
+		width	9.407
+		height	9.407
+		depth	23.33
 	}
 }

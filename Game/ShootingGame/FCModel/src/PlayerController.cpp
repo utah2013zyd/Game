@@ -6,12 +6,15 @@ PlayerController::PlayerController(const std::string & name, const std::string &
 {
 	IInputManager::getSingleton().addKeyListener(this);
 	IInputManager::getSingleton().addMouseListener(this);
+	((Orz::MouseListener*)this)->setAlways(true);
+	IInputManager::getSingleton().addJoyStickListener(this);
 }
 
 PlayerController::~PlayerController(void)
 {
 	IInputManager::getSingleton().removeKeyListener(this);
 	IInputManager::getSingleton().removeMouseListener(this);
+	IInputManager::getSingleton().removeJoyStickListener(this);
 }
 
 bool PlayerController::onMousePressed(const MouseEvent & evt)
@@ -94,6 +97,44 @@ bool PlayerController::onKeyReleased(const Orz::KeyEvent &evt)
 	return true;
 }
 
+bool PlayerController::onButtonPressed(const Orz::JoyStickEvent &evt)
+{	
+	if(evt.getButton() == Orz::JB_A)
+	{
+		Event* evt = FCEvents::createEvent(FCEvents::FIRE);
+		evt->setSender(this->shared_from_this());
+		evt->setReceiver(((FCFighter*)IDManager::getPointer(_fighterName, ACTOR))->shared_from_this());
+		getWorld()->broadcasting(evt);
+		
+	}
+	return true;
+}
+bool PlayerController::onButtonReleased(const Orz::JoyStickEvent &evt)
+{
+	return true;
+}
+bool PlayerController::onAxisMoved(const Orz::JoyStickEvent &evt)
+{
+	FCFighter* player = (FCFighter*)IDManager::getPointer(_fighterName, ACTOR);
+	//std::cout << evt.getAxis() << "   " << evt.getAbsAxis() << std::endl;
+	if(evt.getAxis() == 0){
+		if(evt.getAbsAxis() == -32768)
+			player->pitch(-1);
+		else if(evt.getAbsAxis() == 32767)
+			player->pitch(1);
+		else if(evt.getAbsAxis() == -129)
+			player->pitch(0);
+	}
+	else if(evt.getAxis() == 1){
+		if(evt.getAbsAxis() == -32768)
+			player->yaw(1);
+		else if(evt.getAbsAxis() == 32767)
+			player->yaw(-1);
+		else if(evt.getAbsAxis() == 128)
+			player->yaw(0);
+	}
+	return true;
+}
 const std::string & PlayerControllerFactory::getTypeName() const
 {
 	static const std::string typeName("PlayerController");

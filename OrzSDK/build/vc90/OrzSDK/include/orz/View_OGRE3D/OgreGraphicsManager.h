@@ -20,6 +20,7 @@ public:
 	void shutdown(void);
 	Ogre::Camera * getCamera(void);
 	Ogre::SceneManager * getSceneManager(void);
+	Ogre::Viewport * getViewport(void);
 	Ogre::RenderWindow * getRenderWindow(void);
 private:
 	

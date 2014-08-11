@@ -26,6 +26,8 @@ namespace Orz
 		EnemiesList _enemies;
 		EnemiesList _enemiesCtrl;
 		ActorPtr _playerCtrl;
+		Ogre::SceneNode* _camNode;
+		Ogre::ParticleSystem* _star;
 		int _numEnemies;
 	
 	};

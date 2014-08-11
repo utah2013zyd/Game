@@ -84,8 +84,23 @@ void FCScene::doEnable(void)
 
 	_playerCtrl = GameFactories::getInstance().createActor("PlayerController", "playerCtrl", &playerCtrlPar);
 	getWorld()->comeIn(_playerCtrl);
-
 	enableUpdate();
+
+
+	//_camNode = ((FCFighter*)_player.get())->getNode()->createChildSceneNode();
+	_camNode = OgreGraphicsManager::getSingleton().getSceneManager()->createSceneNode();
+	OgreGraphicsManager::getSingleton().getCamera()->setNearClipDistance(0.5);
+	_camNode->attachObject(OgreGraphicsManager::getSingleton().getCamera());
+	
+	FCFighter* fighter = (FCFighter*)_player.get();
+	_star = sm->createParticleSystem("camStar", "star2");
+	_star->fastForward(6);
+	fighter->getNode()->attachObject(_star);
+	
+	//Ogre::CompositorManager::getSingleton().addCompositor(OgreGraphicsManager::getSingleton().getViewport(), "Radial Blur", -1);
+	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreGraphicsManager::getSingleton().getViewport(), "Radial Blur", true);
+
+
 
 }
 
@@ -108,14 +123,18 @@ void FCScene::doDisable(void)
 		getWorld()->goOut(*it);
 	}
 	_enemiesCtrl.clear();
-
+	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreGraphicsManager::getSingleton().getViewport(), "Radial Blur", false);
+	Ogre::CompositorManager::getSingleton().removeAll();
 //	OgreNewtManager::getSingleton().getNewtWorld()->destroyAllBodies();
 }
 	
 void FCScene::doFrame(void)
 {
-
-	FCKnowledge::getSingleton().setPlayerPosition(((FCFighter*)_player.get())->getPosition());
+	FCFighter* fighter = (FCFighter*)_player.get();
+	_camNode->setPosition(fighter->getPosition() + fighter->getAxis()*Ogre::Vector3(-0.5, 3, -1));
+	//_camNode->setDirection(fighter->getAxis()*Ogre::Vector3::UNIT_Z, Ogre::Node::TS_WORLD);
+	_camNode->setOrientation(fighter->getNode()->getOrientation()*Ogre::Quaternion(0, 0, 1, 0));
+	FCKnowledge::getSingleton().setPlayerPosition(fighter->getPosition());
 }
 void FCScene::doExecute(Event *evt)
 {

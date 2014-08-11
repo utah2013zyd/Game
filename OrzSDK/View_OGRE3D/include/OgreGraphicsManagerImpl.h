@@ -13,6 +13,7 @@ public:
 	~OgreGraphicsManagerImpl(void);
 	Ogre::Camera * getCamera(void);
 	Ogre::SceneManager * getSceneManager(void);
+	Ogre::Viewport * getViewport(void);
 	Ogre::RenderWindow * getRenderWindow(void);
 	bool update(TimeType interval);
 	bool init(void);

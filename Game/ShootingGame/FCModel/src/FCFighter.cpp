@@ -6,7 +6,8 @@
 
 using namespace Orz;
 FCFighter::FCFighter(const std::string & name, Ogre::Vector3 initPos, int queryFlag, double speedLimit, double rotateAngle):Actor(name),
-	_rotateVec(Ogre::Vector3(0.0, 0.0, 0.0)), _power(1.0), _initPos(initPos), _queryFlag(queryFlag), _speedLimit(speedLimit), _rotateAngle(rotateAngle), _lifePoint(100.0)
+_rotateVec(Ogre::Vector3(0.0, 0.0, 0.0)), _power(1.0), _initPos(initPos), _queryFlag(queryFlag), _speedLimit(speedLimit), _rotateAngle(rotateAngle), _lifePoint(100.0), 
+_rotateQua(Ogre::Quaternion::IDENTITY), _rotProgress(Ogre::Real(0)),_rotFactor(Ogre::Real(0.05)), _rotating(false)
 {
 	
 }
@@ -63,8 +64,11 @@ void FCFighter::doEnable(void)
 		getWorld()->comeIn(bullet);
 		_bullets.push_back(bullet);
 	}
+	//Ogre::ParticleSystem* test = sm->createParticleSystem(this->getName()+"test", "star");
+	//_node->attachObject(test);
 	enableUpdate();
 	_logic_initiate();
+
 	
 }
 
@@ -125,21 +129,52 @@ void FCFighter::roll(double z)
 
 void FCFighter::yaw(double y)
 {
-	//std::cout<< "test done"<<std::endl;
+
 	_rotateVec.y = y;
 }
 
 void FCFighter::pitch(double x)
 {
+
 	_rotateVec.x = x;
 }
 
 void FCFighter::forward(void)
 {
-	_node->yaw(Ogre::Degree(_rotateVec.y* _rotateAngle * WORLD_UPDATE_INTERVAL));
-	_node->pitch(Ogre::Degree(_rotateVec.x * _rotateAngle * WORLD_UPDATE_INTERVAL));
-	_node->roll(Ogre::Degree(_rotateVec.z * _rotateAngle * WORLD_UPDATE_INTERVAL));
-	
+		//std::cout << "done b111111 here" << std::endl;
+	if(_rotateVec != Ogre::Vector3::ZERO)
+	{
+		_rotateQua = Ogre::Quaternion::IDENTITY;
+		_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.z * _rotateAngle * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_Z);
+		_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.y * _rotateAngle * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_Y);
+		_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.x * _rotateAngle * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_X);
+		_node->rotate(_rotateQua);
+		_rotating  = true;
+		_rotProgress = 0;
+	}
+	else
+	{
+		if(_rotating)
+		{
+			_rotProgress += _rotFactor;
+			if(_rotProgress > 1)
+			{
+				_rotating =false;
+				_rotProgress = 0;
+			}
+			else
+			{
+				Ogre::Quaternion delta = Ogre::Quaternion::Slerp(_rotProgress, _rotateQua, Ogre::Quaternion::IDENTITY, true);
+				_node->rotate(delta);
+			}
+		}
+	}
+	//_node->yaw(Ogre::Degree(_rotateVec.y* _rotateAngle * WORLD_UPDATE_INTERVAL));
+	//_node->pitch(Ogre::Degree(_rotateVec.x * _rotateAngle * WORLD_UPDATE_INTERVAL));
+	//_node->roll(Ogre::Degree(_rotateVec.z * _rotateAngle * WORLD_UPDATE_INTERVAL));
+	//if(_rotating)
+
+
 	_node->translate(_speedLimit * _power * Ogre::Vector3::UNIT_Z * WORLD_UPDATE_INTERVAL, Ogre::Node::TS_LOCAL);
 }
 

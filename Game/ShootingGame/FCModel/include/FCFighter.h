@@ -12,7 +12,7 @@ namespace Orz
 	private:
 		typedef std::vector<ActorPtr> BulletsList;
 	public:
-		FCFighter(const std::string & name = IDManager::BLANK, Ogre::Vector3 initPos = Ogre::Vector3(0.0, 0.0, 0.0), int queryFlag = 0x0, double speedLimit = 50, double rotateAngle = 30);
+		FCFighter(const std::string & name = IDManager::BLANK, Ogre::Vector3 initPos = Ogre::Vector3(0.0, 0.0, 0.0), int queryFlag = 0x0, double speedLimit = 50, double rotateAngle = 70);
 		virtual ~FCFighter(void);
 		
 		void doEnable(void);
@@ -48,7 +48,11 @@ namespace Orz
 		double _lifePoint;
 		Ogre::SphereSceneQuery * _query;
 
-	
+		//fly
+		Ogre::Quaternion _rotateQua;
+		Ogre::Real _rotProgress;
+		Ogre::Real _rotFactor;
+		bool _rotating;
 	};
 	
 
