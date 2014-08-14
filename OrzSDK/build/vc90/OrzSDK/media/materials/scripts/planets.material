@@ -1,0 +1,53 @@
+material Planets/Down
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.75 0.75 0.75
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture planet_Down_3621.png
+			}
+		}
+	}
+}
+
+material Planets/Dust
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.75 0.75 0.75
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture planet_Dust.png
+			}
+		}
+	}
+}
+
+material Planets/Reststop
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.75 0.75 0.75
+			cull_hardware none
+			cull_software none
+
+			texture_unit
+			{
+				texture planet_Reststop.png
+			}
+		}
+	}
+}

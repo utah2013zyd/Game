@@ -1,5 +1,5 @@
 #include "FCConfig.h"
-#include "FCFighter.h"
+#include "EnemyPlane.h"
 #include "EnemyControllerLogic.h"
 #include <orz/Toolkit_Base/FSMLogic.h>
 
@@ -27,7 +27,7 @@ namespace Orz
 
 	};
 
-		//同时为了配合插件体系，我们提供了相应的导演工厂类。用于系统来“生产”相应。
+
 	class EnemyControllerFactory: public IFactory<Actor>
 	{
 	public:

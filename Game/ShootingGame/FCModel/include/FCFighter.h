@@ -7,22 +7,23 @@
 namespace Orz
 {
 
-	class FCFighter : public Actor, private FSMLogic<FCFighter, FCFighterLogic>
+	class FCFighter : public Actor, protected FSMLogic<FCFighter, FCFighterLogic>
 	{
 	private:
 		typedef std::vector<ActorPtr> BulletsList;
 	public:
-		FCFighter(const std::string & name = IDManager::BLANK, Ogre::Vector3 initPos = Ogre::Vector3(0.0, 0.0, 0.0), int queryFlag = 0x0, double speedLimit = 50, double rotateAngle = 70);
+		FCFighter(const std::string & name = IDManager::BLANK, Ogre::Vector3 initPos = Ogre::Vector3(0.0, 0.0, 0.0), int queryFlag = 0x0, double speedLimit = 100, double rotateAngle = 70);
 		virtual ~FCFighter(void);
 		
-		void doEnable(void);
-		void doDisable(void);
-		void doFrame(void);//1在每一个frame调用
-		void doExecute(Event *evt);
+		virtual void doEnable(void);
+		virtual void doDisable(void);
+		virtual void doFrame(void);							//called every frame
+		virtual void doExecute(Event *evt);
 		
 		void roll(double z);
 		void yaw(double y);
 		void pitch(double x);
+		void speedControl(double speed);
 		void forward(void);
 		void fire(void);
 		void crush(void);
@@ -33,7 +34,7 @@ namespace Orz
 		Ogre::Vector3 getPosition(){ return _node->getPosition(); }
 		double getRotateAngle(){ return _rotateAngle; }
 		Ogre::SceneNode* getNode(){ return _node; }
-	private:
+	protected:
 		Ogre::SceneNode * _node;
 		Ogre::Entity * _entity;
 		//OgreNewt::CollisionPtr _col;
@@ -53,19 +54,6 @@ namespace Orz
 		Ogre::Real _rotProgress;
 		Ogre::Real _rotFactor;
 		bool _rotating;
-	};
-	
-
-		
-
-	//同时为了配合插件体系，我们提供了相应的导演工厂类。用于系统来“生产”相应。
-	class FCFighterFactory: public IFactory<Actor>
-	{
-	public:
-
-		virtual const std::string & getTypeName() const;
-
-		virtual pointer_type createInstance(const std::string& instanceName = IDManager::BLANK, parameter_type parameter = NULL);
 	};
 
 }

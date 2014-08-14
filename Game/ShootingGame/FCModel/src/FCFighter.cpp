@@ -6,7 +6,7 @@
 
 using namespace Orz;
 FCFighter::FCFighter(const std::string & name, Ogre::Vector3 initPos, int queryFlag, double speedLimit, double rotateAngle):Actor(name),
-_rotateVec(Ogre::Vector3(0.0, 0.0, 0.0)), _power(1.0), _initPos(initPos), _queryFlag(queryFlag), _speedLimit(speedLimit), _rotateAngle(rotateAngle), _lifePoint(100.0), 
+_rotateVec(Ogre::Vector3(0.0, 0.0, 0.0)), _power(0.4), _initPos(initPos), _queryFlag(queryFlag), _speedLimit(speedLimit), _rotateAngle(rotateAngle), _lifePoint(100.0), 
 _rotateQua(Ogre::Quaternion::IDENTITY), _rotProgress(Ogre::Real(0)),_rotFactor(Ogre::Real(0.05)), _rotating(false)
 {
 	
@@ -139,6 +139,13 @@ void FCFighter::pitch(double x)
 	_rotateVec.x = x;
 }
 
+void FCFighter::speedControl(double speed)
+{
+	double temp = _power + speed;
+	if(temp <= 1 && temp >= 0)
+		_power = temp;
+}
+
 void FCFighter::forward(void)
 {
 		//std::cout << "done b111111 here" << std::endl;
@@ -252,31 +259,5 @@ bool FCFighter::checkHit(void)
 		}
 	}
 	return false;
-}
-const std::string & FCFighterFactory::getTypeName() const
-{
-	static const std::string typeName("FCFighter");
-	return typeName;
-}
-FCFighterFactory::pointer_type FCFighterFactory::createInstance(const std::string& instanceName, parameter_type parameter)
-{
-	Ogre::Vector3 initPos = Ogre::Vector3(0.0, 0.0, 0.0);
-	int queryFlag = 0x0;
-	double speedLimit = 0;
-	if(parameter)
-	{
-		parameter_iterator it = parameter->find("initPos");
-		if(it!= parameter->end())
-			initPos = VariantData<Ogre::Vector3>::get(it->second);
-
-		it = parameter->find("queryFlag");
-		if(it != parameter->end())
-			queryFlag = VariantData<int>::get(it->second);
-
-		it = parameter->find("speedLimit");
-		if(it != parameter->end())
-			speedLimit = VariantData<double>::get(it->second);
-	}
-	return pointer_type(new FCFighter(instanceName, initPos, queryFlag, speedLimit));
 }
 

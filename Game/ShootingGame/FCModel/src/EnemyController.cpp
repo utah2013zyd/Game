@@ -35,7 +35,7 @@ void EnemyController::doExecute(Orz::Event *evt)
 
 void EnemyController::approach(void)
 {
-	FCFighter* enemy = (FCFighter*)IDManager::getPointer(_enemyName, ACTOR);
+	EnemyPlane* enemy = static_cast<EnemyPlane*>(IDManager::getPointer(_enemyName, ACTOR));
 	Ogre::Vector3 temp = FCKnowledge::getSingleton().getPlayerPosition() - enemy->getPosition();
 	Ogre::Vector3 direction = temp * enemy->getAxis();
 	//std::cout<<direction.x<<" "<<direction.y<<" "<<direction.z<<std::endl;
@@ -67,7 +67,7 @@ void EnemyController::approach(void)
 
 bool EnemyController::withinReach(void)
 {
-	FCFighter* enemy = (FCFighter*)IDManager::getPointer(_enemyName, ACTOR);
+	EnemyPlane* enemy = static_cast<EnemyPlane*>(IDManager::getPointer(_enemyName, ACTOR));
 	double distance = enemy->getPosition().distance(FCKnowledge::getSingleton().getPlayerPosition());
 	
 	return distance < 100.0;
@@ -75,7 +75,7 @@ bool EnemyController::withinReach(void)
 
 void EnemyController::fire(void)
 {
-	FCFighter* enemy = (FCFighter*)IDManager::getPointer(_enemyName, ACTOR);
+	EnemyPlane* enemy = static_cast<EnemyPlane*>(IDManager::getPointer(_enemyName, ACTOR));
 	enemy->fire();
 	//std::cout << enemy->getName()<<std::endl;
 }

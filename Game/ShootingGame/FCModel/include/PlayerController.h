@@ -1,6 +1,6 @@
 #include "FCConfig.h"
 
-#include "FCFighter.h"
+#include "PlayerPlane.h"
 #include <orz/Toolkit_Base/FSMLogic.h>
 #pragma once
 namespace Orz

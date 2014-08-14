@@ -23,7 +23,7 @@ bool PlayerController::onMousePressed(const MouseEvent & evt)
 	{
 		Event* evt = FCEvents::createEvent(FCEvents::FIRE);
 		evt->setSender(this->shared_from_this());
-		evt->setReceiver(((FCFighter*)IDManager::getPointer(_fighterName, ACTOR))->shared_from_this());
+		evt->setReceiver(((PlayerPlane*)IDManager::getPointer(_fighterName, ACTOR))->shared_from_this());
 		getWorld()->broadcasting(evt);
 	}
 	return true;
@@ -41,7 +41,7 @@ bool PlayerController::onMouseMoved(const Orz::MouseEvent &evt)
 
 bool PlayerController::onKeyPressed(const Orz::KeyEvent &evt)
 {
-	FCFighter* player = (FCFighter*)IDManager::getPointer(_fighterName, ACTOR);
+	PlayerPlane* player = (PlayerPlane*)IDManager::getPointer(_fighterName, ACTOR);
 	switch(evt.getKey())
 	{
 	case KC_A:
@@ -72,7 +72,7 @@ bool PlayerController::onKeyPressed(const Orz::KeyEvent &evt)
 
 bool PlayerController::onKeyReleased(const Orz::KeyEvent &evt)
 {
-	FCFighter* player = (FCFighter*)IDManager::getPointer(_fighterName, ACTOR);
+	PlayerPlane* player = (PlayerPlane*)IDManager::getPointer(_fighterName, ACTOR);
 	switch(evt.getKey())
 	{
 	case KC_A:
@@ -89,9 +89,11 @@ bool PlayerController::onKeyReleased(const Orz::KeyEvent &evt)
 	case KC_E:
 		player->roll(0);
 		break;
-	case KC_SPACE:
-		//player->forward(1);
+	case KC_R:
+		player->speedControl(0.2);
 		break;
+	case KC_F:
+		player->speedControl(-0.2);
 	}
 
 	return true;
@@ -103,7 +105,7 @@ bool PlayerController::onButtonPressed(const Orz::JoyStickEvent &evt)
 	{
 		Event* evt = FCEvents::createEvent(FCEvents::FIRE);
 		evt->setSender(this->shared_from_this());
-		evt->setReceiver(((FCFighter*)IDManager::getPointer(_fighterName, ACTOR))->shared_from_this());
+		evt->setReceiver(((PlayerPlane*)IDManager::getPointer(_fighterName, ACTOR))->shared_from_this());
 		getWorld()->broadcasting(evt);
 		
 	}
@@ -115,7 +117,7 @@ bool PlayerController::onButtonReleased(const Orz::JoyStickEvent &evt)
 }
 bool PlayerController::onAxisMoved(const Orz::JoyStickEvent &evt)
 {
-	FCFighter* player = (FCFighter*)IDManager::getPointer(_fighterName, ACTOR);
+	PlayerPlane* player = (PlayerPlane*)IDManager::getPointer(_fighterName, ACTOR);
 	//std::cout << evt.getAxis() << "   " << evt.getAbsAxis() << std::endl;
 	if(evt.getAxis() == 0){
 		if(evt.getAbsAxis() == -32768)

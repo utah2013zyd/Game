@@ -2,9 +2,11 @@
 #include "FCConfig.h"
 #include "FCDirector.h"
 #include "FCScene.h"
-#include "FCFighter.h"
 #include "FCBullet.h"
-#include "PlayerController.h"
+#include "PlayerPlane.h"
+#include "EnemyPlane.h"
+#include "Obstacle.h"
+
 
 
 #include <orz/Framework_Base/Logic.h>
@@ -16,10 +18,12 @@ extern "C" void dllStartPlugin(void)
 	game.reset(new GameRegisterList<boost::mpl::list<
 		FCDirectorFactory, 
 		FCSceneFactory,
-		FCFighterFactory,
 		FCBulletFactory, 
 		EnemyControllerFactory,
-		PlayerControllerFactory
+		PlayerControllerFactory,
+		PlayerPlaneFactory, 
+		EnemyPlaneFactory,
+		ObstacleFactory
 	> >());
 	
 }

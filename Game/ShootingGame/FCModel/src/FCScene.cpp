@@ -3,7 +3,7 @@
 #include "FCDirector.h"
 
 using namespace Orz;
-FCScene::FCScene(const std::string & name):Scene(name)
+FCScene::FCScene(const std::string & name):Scene(name), _numEnemies(5)
 {
 }
 FCScene::~FCScene(void)
@@ -23,7 +23,7 @@ void FCScene::doEnable(void)
 	
 	//把其场景清空
 	sm->clearScene();
-	_numEnemies = 5;
+
 	//sm->setWorldGeometry("terrain.cfg");
 	
 
@@ -42,66 +42,71 @@ void FCScene::doEnable(void)
 	//pPlaneEnt->setMaterialName("Examples/Rockwall");
 	//sm->getRootSceneNode()->createChildSceneNode()->attachObject(pPlaneEnt);
 
-	//设置环境光
+	//set ambient light
 	sm->setAmbientLight(ColourValue(0.5, 0.5, 0.5));
-	sm->setSkyBox(true, "Examples/SpaceSkyBox");
-	// 创建一个光源
-	Light* l = sm->createLight("MainLight");
-//	OgreGraphicsManager::getSingleton().getCamera()->lookAt(Vector3(0,0,0));
+	
+	//create sky box
+	sm->setSkyBox(true, "Examples/SpaceSkyBox2");
 
-	//设置光源位置
+	// create a light source
+	Light* l = sm->createLight("MainLight");
+
+
+	//set light position
 	l->setPosition(20,80,50);
 
+	//create player
 	NameValueList par;
 	par["initPos"] = Ogre::Vector3(200, 50, 270);
 	par["queryFlag"] = 0x2;
 	par["speedLimit"] = 50.0;
-	_player = Orz::GameFactories::getInstance().createActor("FCFighter", "player", &par);
+	_player = Orz::GameFactories::getInstance().createActor("PlayerPlane", "player", &par);
 	getWorld()->comeIn(_player);
+	
+	//create player controller
+	NameValueList playerCtrlPar;
+	playerCtrlPar["playerName"] = std::string("player");
+	_playerCtrl = GameFactories::getInstance().createActor("PlayerController", "playerCtrl", &playerCtrlPar);
+	getWorld()->comeIn(_playerCtrl);
 
+	//create enemies
 	for(int i = 0; i < _numEnemies; i++)
 	{
 
 		par["initPos"] = Ogre::Vector3(Ogre::Math::RangeRandom(0, 1000), Ogre::Math::RangeRandom(0, 200), Ogre::Math::RangeRandom(0, 1000));
 		par["queryFlag"] = 0x8;
 		par["speedLimit"] = 10.0;
-		ActorPtr enemy = GameFactories::getInstance().createActor("FCFighter", "enemy"+boost::lexical_cast<std::string>(i), &par);
+		ActorPtr enemy = GameFactories::getInstance().createActor("EnemyPlane", "enemy"+boost::lexical_cast<std::string>(i), &par);
 		getWorld()->comeIn(enemy);
 		_enemies.push_back(enemy);
 
-		//std::cout<< "done here"<< std::endl;
 		NameValueList ctrlPar;
 		ctrlPar["fighterName"] = "enemy"+boost::lexical_cast<std::string>(i);
-		//std::cout<<"done parameter"<<std::endl;
 		ActorPtr enemyCtrl = GameFactories::getInstance().createActor("EnemyController", "enemyCtrl"+boost::lexical_cast<std::string>(i), &ctrlPar);
-		//std::cout<<"done create"<<std::endl;
 		getWorld()->comeIn(enemyCtrl);
 		_enemiesCtrl.push_back(enemyCtrl);
 	}
 
-	NameValueList playerCtrlPar;
-	playerCtrlPar["playerName"] = std::string("player");
+	NameValueList obstaclePar;
+	obstaclePar["pos"] = Ogre::Vector3(1000, 400, 800);
+	obstaclePar["scale"] = 1.7;
+	obstaclePar["materialName"] = std::string("Planets/Down");
+	_obstacle1 = GameFactories::getInstance().createActor("Obstacle", "obstacle1", &obstaclePar);
+	getWorld()->comeIn(_obstacle1);
 
-	_playerCtrl = GameFactories::getInstance().createActor("PlayerController", "playerCtrl", &playerCtrlPar);
-	getWorld()->comeIn(_playerCtrl);
+	obstaclePar["pos"] = Ogre::Vector3(-1000, -100, 400);
+	obstaclePar["scale"] = 1.2;
+	obstaclePar["materialName"] = std::string("Planets/Dust");
+	_obstacle2 = GameFactories::getInstance().createActor("Obstacle", "obstacle2", &obstaclePar);
+	getWorld()->comeIn(_obstacle2);
+
+	obstaclePar["pos"] = Ogre::Vector3(500, -400, -1000);
+	obstaclePar["scale"] = 0.8;
+	obstaclePar["materialName"] = std::string("Planets/Reststop");
+	_obstacle3 = GameFactories::getInstance().createActor("Obstacle", "obstacle3", &obstaclePar);
+	getWorld()->comeIn(_obstacle3);
+	
 	enableUpdate();
-
-
-	//_camNode = ((FCFighter*)_player.get())->getNode()->createChildSceneNode();
-	_camNode = OgreGraphicsManager::getSingleton().getSceneManager()->createSceneNode();
-	OgreGraphicsManager::getSingleton().getCamera()->setNearClipDistance(0.5);
-	_camNode->attachObject(OgreGraphicsManager::getSingleton().getCamera());
-	
-	FCFighter* fighter = (FCFighter*)_player.get();
-	_star = sm->createParticleSystem("camStar", "star2");
-	_star->fastForward(6);
-	fighter->getNode()->attachObject(_star);
-	
-	//Ogre::CompositorManager::getSingleton().addCompositor(OgreGraphicsManager::getSingleton().getViewport(), "Radial Blur", -1);
-	//Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreGraphicsManager::getSingleton().getViewport(), "Radial Blur", true);
-
-
-
 }
 
 //销毁之前调用
@@ -123,18 +128,21 @@ void FCScene::doDisable(void)
 		getWorld()->goOut(*it);
 	}
 	_enemiesCtrl.clear();
-	Ogre::CompositorManager::getSingleton().setCompositorEnabled(OgreGraphicsManager::getSingleton().getViewport(), "Radial Blur", false);
-	Ogre::CompositorManager::getSingleton().removeAll();
-//	OgreNewtManager::getSingleton().getNewtWorld()->destroyAllBodies();
+
+	getWorld()->goOut(_obstacle1);
+	getWorld()->goOut(_obstacle2);
+	getWorld()->goOut(_obstacle3);
+
+	//	OgreNewtManager::getSingleton().getNewtWorld()->destroyAllBodies();
 }
 	
 void FCScene::doFrame(void)
 {
-	FCFighter* fighter = (FCFighter*)_player.get();
-	_camNode->setPosition(fighter->getPosition() + fighter->getAxis()*Ogre::Vector3(-0.5, 3, -1));
-	//_camNode->setDirection(fighter->getAxis()*Ogre::Vector3::UNIT_Z, Ogre::Node::TS_WORLD);
-	_camNode->setOrientation(fighter->getNode()->getOrientation()*Ogre::Quaternion(0, 0, 1, 0));
-	FCKnowledge::getSingleton().setPlayerPosition(fighter->getPosition());
+	//FCFighter* fighter = (FCFighter*)_player.get();
+	//_camNode->setPosition(fighter->getPosition() + fighter->getAxis()*Ogre::Vector3(-0.5, 3, -1));
+	////_camNode->setDirection(fighter->getAxis()*Ogre::Vector3::UNIT_Z, Ogre::Node::TS_WORLD);
+	//_camNode->setOrientation(fighter->getNode()->getOrientation()*Ogre::Quaternion(0, 0, 1, 0));
+	//FCKnowledge::getSingleton().setPlayerPosition(fighter->getPosition());
 }
 void FCScene::doExecute(Event *evt)
 {
