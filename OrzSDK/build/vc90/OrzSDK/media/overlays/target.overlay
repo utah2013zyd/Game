@@ -1,0 +1,15 @@
+Target
+{
+	zorder 200
+	container Panel(TargetPanel)
+	{
+		metrics_mode pixels
+		vert_align center
+		horz_align center
+		left -15
+		top -15
+		width 30
+		height 30
+		material Target
+	}
+}

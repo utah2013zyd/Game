@@ -105,6 +105,8 @@ void FCScene::doEnable(void)
 	obstaclePar["materialName"] = std::string("Planets/Reststop");
 	_obstacle3 = GameFactories::getInstance().createActor("Obstacle", "obstacle3", &obstaclePar);
 	getWorld()->comeIn(_obstacle3);
+
+	Ogre::OverlayManager::getSingleton().getByName("Target")->show();
 	
 	enableUpdate();
 }

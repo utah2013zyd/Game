@@ -1,8 +1,8 @@
 #include "EnemyPlane.h"
 using namespace Orz;
 
-EnemyPlane::EnemyPlane(const std::string & name, Ogre::Vector3 initPos, int queryFlag, double speedLimit, double rotateAngle):
-	FCFighter(name, initPos, queryFlag, speedLimit, rotateAngle)
+EnemyPlane::EnemyPlane(const std::string & name, Ogre::Vector3 initPos, int queryFlag, double speedLimit):
+	FCFighter(name, initPos, queryFlag, speedLimit)
 {
 	
 }

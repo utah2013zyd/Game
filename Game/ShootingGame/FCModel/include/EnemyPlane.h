@@ -10,7 +10,7 @@ namespace Orz
 	class EnemyPlane: public FCFighter
 	{
 	public:
-		EnemyPlane(const std::string & name = IDManager::BLANK, Ogre::Vector3 initPos = Ogre::Vector3(0.0, 0.0, 0.0), int queryFlag = 0x0, double speedLimit = 50, double rotateAngle = 70);
+		EnemyPlane(const std::string & name = IDManager::BLANK, Ogre::Vector3 initPos = Ogre::Vector3(0.0, 0.0, 0.0), int queryFlag = 0x0, double speedLimit = 50);
 		virtual ~EnemyPlane(void);
 
 		void doEnable(void);

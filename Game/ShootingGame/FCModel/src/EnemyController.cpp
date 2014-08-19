@@ -42,17 +42,17 @@ void EnemyController::approach(void)
 	if(direction.angleBetween(Ogre::Vector3::NEGATIVE_UNIT_Z) >= Ogre::Radian(Ogre::Degree(1)))
 	{
 		Ogre::Quaternion test = direction.getRotationTo(Ogre::Vector3::NEGATIVE_UNIT_Z);
-		double angle = enemy->getRotateAngle();
+		Ogre::Degree angle = enemy->getRotateLimit();
 		
-		double yawNum = test.getYaw().valueDegrees()/(angle*WORLD_UPDATE_INTERVAL);
+		double yawNum = test.getYaw().valueDegrees()/(angle*WORLD_UPDATE_INTERVAL).valueDegrees();
 		yawNum = Ogre::Math::Clamp(yawNum, -1.0, 1.0);
 		enemy->yaw(yawNum);
 
-		double pitchNum = test.getPitch().valueDegrees()/(angle*WORLD_UPDATE_INTERVAL);
+		double pitchNum = test.getPitch().valueDegrees()/(angle*WORLD_UPDATE_INTERVAL).valueDegrees();
 		pitchNum = Ogre::Math::Clamp(pitchNum, -1.0, 1.0);
 		enemy->pitch(pitchNum);
 		
-		double rollNum = test.getRoll().valueDegrees()/(angle*WORLD_UPDATE_INTERVAL);
+		double rollNum = test.getRoll().valueDegrees()/(angle*WORLD_UPDATE_INTERVAL).valueDegrees();
 		rollNum = Ogre::Math::Clamp(rollNum, -1.0, 1.0);
 		enemy->roll(rollNum);
 		

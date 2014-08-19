@@ -1,0 +1,18 @@
+material Target
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.75 0.75 0.75
+			cull_hardware none
+			cull_software none
+			scene_blend add
+
+			texture_unit
+			{
+				texture target.png
+			}
+		}
+	}
+}

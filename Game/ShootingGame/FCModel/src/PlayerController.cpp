@@ -51,10 +51,10 @@ bool PlayerController::onKeyPressed(const Orz::KeyEvent &evt)
 		player->yaw(-1);
 		break;
 	case KC_W:
-		player->pitch(-1);
+		player->pitch(1);
 		break;
 	case KC_S:
-		player->pitch(1);
+		player->pitch(-1);
 		break;
 	case KC_Q:
 		player->roll(-1);
@@ -121,9 +121,9 @@ bool PlayerController::onAxisMoved(const Orz::JoyStickEvent &evt)
 	//std::cout << evt.getAxis() << "   " << evt.getAbsAxis() << std::endl;
 	if(evt.getAxis() == 0){
 		if(evt.getAbsAxis() == -32768)
-			player->pitch(-1);
-		else if(evt.getAbsAxis() == 32767)
 			player->pitch(1);
+		else if(evt.getAbsAxis() == 32767)
+			player->pitch(-1);
 		else if(evt.getAbsAxis() == -129)
 			player->pitch(0);
 	}

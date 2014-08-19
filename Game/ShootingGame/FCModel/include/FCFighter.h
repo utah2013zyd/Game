@@ -12,7 +12,7 @@ namespace Orz
 	private:
 		typedef std::vector<ActorPtr> BulletsList;
 	public:
-		FCFighter(const std::string & name = IDManager::BLANK, Ogre::Vector3 initPos = Ogre::Vector3(0.0, 0.0, 0.0), int queryFlag = 0x0, double speedLimit = 100, double rotateAngle = 70);
+		FCFighter(const std::string & name = IDManager::BLANK, Ogre::Vector3 initPos = Ogre::Vector3(0.0, 0.0, 0.0), int queryFlag = 0x0, double speedLimit = 100);
 		virtual ~FCFighter(void);
 		
 		virtual void doEnable(void);
@@ -24,7 +24,7 @@ namespace Orz
 		void yaw(double y);
 		void pitch(double x);
 		void speedControl(double speed);
-		void forward(void);
+		virtual void forward(void);
 		void fire(void);
 		void crush(void);
 		void disappear();
@@ -32,7 +32,7 @@ namespace Orz
 		Ogre::Matrix3 getAxis(){return _node->getLocalAxes(); }
 
 		Ogre::Vector3 getPosition(){ return _node->getPosition(); }
-		double getRotateAngle(){ return _rotateAngle; }
+		Ogre::Degree getRotateLimit(){ return _rotateLimit; }
 		Ogre::SceneNode* getNode(){ return _node; }
 	protected:
 		Ogre::SceneNode * _node;
@@ -43,17 +43,17 @@ namespace Orz
 		Ogre::Vector3 _initPos;
 		double _speedLimit;
 		double _power;
-		double _rotateAngle;
+		Ogre::Real _speed;
+		const Ogre::Real _acceleration;
+
 		int _queryFlag;
 		Ogre::Vector3 _rotateVec;
 		double _lifePoint;
 		Ogre::SphereSceneQuery * _query;
 
 		//fly
-		Ogre::Quaternion _rotateQua;
-		Ogre::Real _rotProgress;
-		Ogre::Real _rotFactor;
-		bool _rotating;
+		
+		Ogre::Degree _rotateLimit;
 	};
 
 }

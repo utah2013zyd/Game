@@ -5,9 +5,9 @@
 #include <iostream>
 
 using namespace Orz;
-FCFighter::FCFighter(const std::string & name, Ogre::Vector3 initPos, int queryFlag, double speedLimit, double rotateAngle):Actor(name),
-_rotateVec(Ogre::Vector3(0.0, 0.0, 0.0)), _power(0.4), _initPos(initPos), _queryFlag(queryFlag), _speedLimit(speedLimit), _rotateAngle(rotateAngle), _lifePoint(100.0), 
-_rotateQua(Ogre::Quaternion::IDENTITY), _rotProgress(Ogre::Real(0)),_rotFactor(Ogre::Real(0.05)), _rotating(false)
+FCFighter::FCFighter(const std::string & name, Ogre::Vector3 initPos, int queryFlag, double speedLimit):Actor(name),
+_rotateVec(Ogre::Vector3(0.0, 0.0, 0.0)), _power(0.4), _speed(0), _acceleration(0.05), _initPos(initPos), _queryFlag(queryFlag), _speedLimit(speedLimit), _lifePoint(100.0), 
+ _rotateLimit(80)
 {
 	
 }
@@ -66,6 +66,7 @@ void FCFighter::doEnable(void)
 	}
 	//Ogre::ParticleSystem* test = sm->createParticleSystem(this->getName()+"test", "star");
 	//_node->attachObject(test);
+	_speed = _power * _speedLimit;
 	enableUpdate();
 	_logic_initiate();
 
@@ -148,41 +149,85 @@ void FCFighter::speedControl(double speed)
 
 void FCFighter::forward(void)
 {
-		//std::cout << "done b111111 here" << std::endl;
-	if(_rotateVec != Ogre::Vector3::ZERO)
-	{
-		_rotateQua = Ogre::Quaternion::IDENTITY;
-		_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.z * _rotateAngle * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_Z);
-		_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.y * _rotateAngle * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_Y);
-		_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.x * _rotateAngle * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_X);
-		_node->rotate(_rotateQua);
-		_rotating  = true;
-		_rotProgress = 0;
-	}
-	else
-	{
-		if(_rotating)
-		{
-			_rotProgress += _rotFactor;
-			if(_rotProgress > 1)
-			{
-				_rotating =false;
-				_rotProgress = 0;
-			}
-			else
-			{
-				Ogre::Quaternion delta = Ogre::Quaternion::Slerp(_rotProgress, _rotateQua, Ogre::Quaternion::IDENTITY, true);
-				_node->rotate(delta);
-			}
-		}
-	}
+	//if(_rotateVec != Ogre::Vector3::ZERO)
+	//{
+	//	_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.z * _rotateAcceleration * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_Z);
+	//	_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.y * _rotateAcceleration * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_Y);
+	//	_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.x * _rotateAcceleration * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_X);
+	//	Ogre::Degree angle;
+	//	Ogre::Vector3 axis;
+	//	std::cout << _rotateQua.getYaw().valueDegrees() << std::endl;
+	//	_rotateQua.ToAngleAxis(angle, axis);
+	//	if(angle.valueDegrees() > _rotateLimit.valueDegrees()){
+	//		std::cout << angle.valueDegrees() << std::endl;
+	//		angle = _rotateLimit;
+	//	}
+	//	else if(angle.valueDegrees() < -_rotateLimit.valueDegrees()){
+	//		std::cout << angle.valueDegrees() << std::endl;
+	//		angle = -_rotateLimit;
+	//	}
+	//	_rotateQua.FromAngleAxis(Ogre::Radian(angle), axis);
+	//	_node->rotate(_rotateQua);
+	//}
+	//else
+	//{
+	//	Ogre::Radian angle;
+	//	Ogre::Radian angle2;
+	//	Ogre::Vector3 axis;
+	//	_rotateQua.ToAngleAxis(angle, axis);
+	//	if(angle.valueDegrees() >= 0)
+	//		angle2 = angle - Ogre::Radian(_rotateAcceleration * WORLD_UPDATE_INTERVAL);
+	//	else
+	//		angle2 = angle - Ogre::Radian(-_rotateAcceleration * WORLD_UPDATE_INTERVAL);
+	//	if(angle.valueDegrees() * angle2.valueDegrees() <= 0)
+	//		angle = 0;
+	//	else
+	//		angle = angle2;
+	//	_rotateQua.FromAngleAxis(angle, axis);
+	//	_node->rotate(_rotateQua);
+	//}
+	//if(_rotateVec != Ogre::Vector3::ZERO)
+	//{
+	//	_rotateQua = Ogre::Quaternion::IDENTITY;
+	//	_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.z * _rotateAngle * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_Z);
+	//	_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.y * _rotateAngle * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_Y);
+	//	_rotateQua = _rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.x * _rotateAngle * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_X);
+	//	_node->rotate(_rotateQua);
+	//	_rotating  = true;
+	//	_rotProgress = 0;
+	//}
+	//else
+	//{
+	//	if(_rotating)
+	//	{
+	//		_rotProgress += _rotFactor;
+	//		if(_rotProgress > 1)
+	//		{
+	//			_rotating =false;
+	//			_rotProgress = 0;
+	//		}
+	//		else
+	//		{
+	//			Ogre::Quaternion delta = Ogre::Quaternion::Slerp(_rotProgress, _rotateQua, Ogre::Quaternion::IDENTITY, true);
+	//			_node->rotate(delta);
+	//		}
+	//	}
+	//}
 	//_node->yaw(Ogre::Degree(_rotateVec.y* _rotateAngle * WORLD_UPDATE_INTERVAL));
 	//_node->pitch(Ogre::Degree(_rotateVec.x * _rotateAngle * WORLD_UPDATE_INTERVAL));
 	//_node->roll(Ogre::Degree(_rotateVec.z * _rotateAngle * WORLD_UPDATE_INTERVAL));
 	//if(_rotating)
-
-
-	_node->translate(_speedLimit * _power * Ogre::Vector3::UNIT_Z * WORLD_UPDATE_INTERVAL, Ogre::Node::TS_LOCAL);
+	Ogre::Quaternion rotateQua = Ogre::Quaternion::IDENTITY;
+	rotateQua = rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.z * _rotateLimit * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_Z);
+	rotateQua = rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.y * _rotateLimit * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_Y);
+	rotateQua = rotateQua * Ogre::Quaternion(Ogre::Radian(Ogre::Degree(_rotateVec.x * _rotateLimit * WORLD_UPDATE_INTERVAL)), Ogre::Vector3::UNIT_X);
+	_node->rotate(rotateQua);
+	
+	if(_speed > _power * _speedLimit)
+		_speed -= _acceleration * _speedLimit;
+	else if(_speed < _power * _speedLimit)
+		_speed += _acceleration * _speedLimit;
+	_node->translate(_speed * Ogre::Vector3::UNIT_Z * WORLD_UPDATE_INTERVAL, Ogre::Node::TS_LOCAL);
 }
 
 void FCFighter::fire(void)
