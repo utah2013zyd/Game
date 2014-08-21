@@ -97,6 +97,7 @@ void PlayerPlane::forward(void)
 		_speed -= _acceleration * _speedLimit;
 	else if(_speed < _power * _speedLimit)
 		_speed += _acceleration * _speedLimit;
+	std::cout << _speed << std::endl;
 	_node->translate(_speed * Ogre::Vector3::UNIT_Z * WORLD_UPDATE_INTERVAL, Ogre::Node::TS_LOCAL);
 }
 

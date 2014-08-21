@@ -6,8 +6,8 @@
 
 using namespace Orz;
 FCFighter::FCFighter(const std::string & name, Ogre::Vector3 initPos, int queryFlag, double speedLimit):Actor(name),
-_rotateVec(Ogre::Vector3(0.0, 0.0, 0.0)), _power(0.4), _speed(0), _acceleration(0.05), _initPos(initPos), _queryFlag(queryFlag), _speedLimit(speedLimit), _lifePoint(100.0), 
- _rotateLimit(80)
+_rotateVec(Ogre::Vector3(0.0, 0.0, 0.0)), _power(0.4), _speed(0), _acceleration(0.005), _initPos(initPos), _queryFlag(queryFlag), _speedLimit(speedLimit), _lifePoint(100.0), 
+ _rotateLimit(100)
 {
 	
 }
@@ -140,13 +140,17 @@ void FCFighter::pitch(double x)
 	_rotateVec.x = x;
 }
 
-void FCFighter::speedControl(double speed)
+void FCFighter::speedControlByAcc(double accelerate)
 {
-	double temp = _power + speed;
+	double temp = _power + accelerate;
 	if(temp <= 1 && temp >= 0)
 		_power = temp;
 }
-
+void FCFighter::speedControlByPow(double power)
+{
+	if(power <= 1 && power >= 0)
+		_power = power;
+}
 void FCFighter::forward(void)
 {
 	//if(_rotateVec != Ogre::Vector3::ZERO)

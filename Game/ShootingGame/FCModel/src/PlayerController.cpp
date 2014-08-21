@@ -90,10 +90,10 @@ bool PlayerController::onKeyReleased(const Orz::KeyEvent &evt)
 		player->roll(0);
 		break;
 	case KC_R:
-		player->speedControl(0.2);
+		player->speedControlByAcc(0.2);
 		break;
 	case KC_F:
-		player->speedControl(-0.2);
+		player->speedControlByAcc(-0.2);
 	}
 
 	return true;
@@ -119,21 +119,30 @@ bool PlayerController::onAxisMoved(const Orz::JoyStickEvent &evt)
 {
 	PlayerPlane* player = (PlayerPlane*)IDManager::getPointer(_fighterName, ACTOR);
 	//std::cout << evt.getAxis() << "   " << evt.getAbsAxis() << std::endl;
+	//if(evt.getAxis() == 0){
+	//	if(evt.getAbsAxis() == -32768)
+	//		player->pitch(1);
+	//	else if(evt.getAbsAxis() == 32767)
+	//		player->pitch(-1);
+	//	else if(evt.getAbsAxis() == -129)
+	//		player->pitch(0);
+	//}
+	//else if(evt.getAxis() == 1){
+	//	if(evt.getAbsAxis() == -32768)
+	//		player->yaw(1);
+	//	else if(evt.getAbsAxis() == 32767)
+	//		player->yaw(-1);
+	//	else if(evt.getAbsAxis() == 128)
+	//		player->yaw(0);
+	//}
 	if(evt.getAxis() == 0){
-		if(evt.getAbsAxis() == -32768)
-			player->pitch(1);
-		else if(evt.getAbsAxis() == 32767)
-			player->pitch(-1);
-		else if(evt.getAbsAxis() == -129)
-			player->pitch(0);
+		player->speedControlByPow(0.5 - 0.5 * evt.getAbsAxis()/MAX_AXIS);
 	}
-	else if(evt.getAxis() == 1){
-		if(evt.getAbsAxis() == -32768)
-			player->yaw(1);
-		else if(evt.getAbsAxis() == 32767)
-			player->yaw(-1);
-		else if(evt.getAbsAxis() == 128)
-			player->yaw(0);
+	if(evt.getAxis() == 1){
+		player->pitch(-evt.getAbsAxis()/MAX_AXIS);
+	}
+	else if(evt.getAxis() == 2){
+		player->yaw(-evt.getAbsAxis()/MAX_AXIS);
 	}
 	return true;
 }

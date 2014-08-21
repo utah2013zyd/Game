@@ -167,6 +167,10 @@ namespace Orz{
 	{
 		JB_A = 0, JB_B, JB_X, JB_Y, JB_LB, JB_RB, JB_Back, JB_Start
 	};
+	enum JoyStickAxis
+	{
+		MIN_AXIS = -32768, MAX_AXIS = 32767
+	};
 
 	class KeyEvent
 	{
@@ -296,8 +300,8 @@ namespace Orz{
 
 	class JoyStickEvent{
 	public:
-		inline JoyStickEvent(int button): _button(button) {}
-		inline JoyStickEvent(int axis, int abs): _axis(axis), _absAxis(abs) {}
+		JoyStickEvent(int button): _button(button) {}
+		JoyStickEvent(int axis, int abs): _axis(axis), _absAxis(abs) {}
 		int getAxis() const
 		{
 			return _axis;

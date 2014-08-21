@@ -23,7 +23,8 @@ namespace Orz
 		void roll(double z);
 		void yaw(double y);
 		void pitch(double x);
-		void speedControl(double speed);
+		void speedControlByAcc(double accelerate);
+		void speedControlByPow(double power);
 		virtual void forward(void);
 		void fire(void);
 		void crush(void);
