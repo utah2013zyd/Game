@@ -1,0 +1,40 @@
+//------------------------------------------------------
+//Radial_Blur_FP.cg
+//  Implements radial blur to be used with the compositor
+//  It's very dependant on screen resolution
+//------------------------------------------------------
+
+uniform sampler tex: register(s0);
+
+float4 main(float2 texCoord: TEXCOORD0,
+            uniform float sampleDist,
+            uniform float sampleStrength,
+	    uniform float time,
+	    uniform float timeLimit
+           ) : COLOR
+{
+   //Vector from pixel to the center of the screen
+   float2 dir = 0.5 - texCoord;
+
+   //Distance from pixel to the center (distant pixels have stronger effect)
+   //float dist = distance( float2( 0.5, 0.5 ), texCoord );
+   float dist = sqrt( dir.x*dir.x + dir.y*dir.y );
+
+
+   //Now that we have dist, we can normlize vector
+   dir = normalize( dir );
+
+   //Save the color to be used later
+   float4 color = tex2D( tex, texCoord );
+
+   //red color
+   float4 red = float4(1.0, 0.0, 0.0, 1.0);
+
+   //Calculate amount of blur based on
+   //distance and a strength parameter
+   float t = dist * sampleStrength - sampleDist;
+   t = saturate( t );//We need 0 <= t <= 1
+   t = lerp(t, 0, time/timeLimit);
+   //Blend the original color with the averaged pixels
+   return lerp( color, red, t );
+}

@@ -37,6 +37,7 @@ namespace Orz
 		Ogre::SceneNode* getNode(){ return _node; }
 	protected:
 		Ogre::SceneNode * _node;
+		Ogre::SceneNode* _entityNode;
 		Ogre::Entity * _entity;
 		//OgreNewt::CollisionPtr _col;
 		//OgreNewt::Body* _body;
