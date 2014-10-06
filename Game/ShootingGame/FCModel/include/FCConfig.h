@@ -20,4 +20,5 @@
 
 #include "FCKnowledge.h"
 #include "FCEvents.h"
+#include "DataLogger.h"
 #endif

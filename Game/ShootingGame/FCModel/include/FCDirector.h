@@ -24,6 +24,7 @@ namespace Orz
 		boost::scoped_ptr<CameraController> _camCtrl;
 		ScenePtr _scene;
 		FCKnowledgePtr _knowledge;
+		DataLoggerPtr _dataLogger;
 	};
 	
 

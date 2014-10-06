@@ -5,10 +5,12 @@ using namespace Orz;
 FCDirector::FCDirector(const std::string & name):Director(name)
 {
 	_knowledge.reset(new FCKnowledge());
+	_dataLogger.reset(new DataLogger());
 }
 FCDirector::~FCDirector(void)
 {
 	_knowledge.reset();
+	_dataLogger.reset();
 }
 
 //这个函数会在初始化调用

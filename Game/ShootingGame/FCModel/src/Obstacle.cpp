@@ -3,7 +3,7 @@
 using namespace Orz;
 using namespace Ogre;
 
-Obstacle::Obstacle(const std::string &name, Ogre::Vector3 pos, double scale, const std::string &materialName): Actor(name), _pos(pos),
+Obstacle::Obstacle(const std::string &name, Ogre::Vector3 pos, float scale, const std::string &materialName): Actor(name), _pos(pos),
 	_scale(scale), _materialName(materialName), _node(NULL), _entity(NULL)
 {
 }

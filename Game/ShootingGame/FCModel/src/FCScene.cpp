@@ -140,11 +140,39 @@ void FCScene::doDisable(void)
 	
 void FCScene::doFrame(void)
 {
-	//FCFighter* fighter = (FCFighter*)_player.get();
+	FCFighter* fighter = (FCFighter*)_player.get();
 	//_camNode->setPosition(fighter->getPosition() + fighter->getAxis()*Ogre::Vector3(-0.5, 3, -1));
 	////_camNode->setDirection(fighter->getAxis()*Ogre::Vector3::UNIT_Z, Ogre::Node::TS_WORLD);
 	//_camNode->setOrientation(fighter->getNode()->getOrientation()*Ogre::Quaternion(0, 0, 1, 0));
 	//FCKnowledge::getSingleton().setPlayerPosition(fighter->getPosition());
+	DataLogger::getSingleton().getPlayerData(fighter->getID(), fighter->getPosition().ptr(), fighter->getOrientation().ptr(), fighter->getHealthPoint());
+	for(unsigned int i = 0; i < fighter->getBulletList().size(); i++)
+	{
+		FCBullet* bullet = (FCBullet*)fighter->getBulletList()[i].get();
+		if(bullet->isActive())
+			DataLogger::getSingleton().getPlayerProjectileData(bullet->getID(), bullet->getPosition().ptr(), bullet->getOrientation().ptr());
+	}
+	for(unsigned int i = 0; i < _enemies.size(); i++)
+	{
+		FCFighter* enemy = (FCFighter*)_enemies[i].get();
+		DataLogger::getSingleton().getBotData(enemy->getID(), enemy->getPosition().ptr(), enemy->getOrientation().ptr(), enemy->getHealthPoint());
+		for(unsigned int i = 0; i < enemy->getBulletList().size(); i++)
+		{
+			FCBullet* bullet = (FCBullet*)enemy->getBulletList()[i].get();
+			if(bullet->isActive())
+				DataLogger::getSingleton().getBotProjectileData(bullet->getID(), enemy->getID(), bullet->getPosition().ptr(), bullet->getOrientation().ptr());
+		}
+	}
+	Obstacle* obs = (Obstacle*)_obstacle1.get();
+	DataLogger::getSingleton().getObstacleData(obs->getID(), obs->getPosition().ptr(), obs->getScale());
+	
+	obs = (Obstacle*)_obstacle2.get();
+	DataLogger::getSingleton().getObstacleData(obs->getID(), obs->getPosition().ptr(), obs->getScale());
+	
+	obs = (Obstacle*)_obstacle3.get();
+	DataLogger::getSingleton().getObstacleData(obs->getID(), obs->getPosition().ptr(), obs->getScale());
+
+	DataLogger::getSingleton().writeTest();
 }
 void FCScene::doExecute(Event *evt)
 {

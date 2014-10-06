@@ -24,7 +24,8 @@ namespace Orz
 		void explode(void);
 		void setInactive(void);
 		double getRange(void) { return _range;}
-
+		Ogre::Vector3 getPosition(void) { return _node->getPosition(); }
+		Ogre::Quaternion getOrientation(void) { return _node->getOrientation(); }
 	private:
 		Ogre::SceneNode* _node;
 		Ogre::Entity* _entity;

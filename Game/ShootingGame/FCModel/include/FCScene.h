@@ -1,6 +1,8 @@
 #ifndef __Orz_FC_FCScene_h__
 #define __Orz_FC_FCScene_h__
 #include "FCConfig.h"
+#include "FCBullet.h"
+#include "Obstacle.h"
 #include "PlayerController.h"
 #include "EnemyController.h"
 //#include "FCUI.h"

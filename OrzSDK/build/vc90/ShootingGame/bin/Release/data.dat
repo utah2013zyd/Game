@@ -1,0 +1,36 @@
+player: 
+id: 4
+position: 241.203, 67.7427, 425.647
+orientation: 0.926816, -0.0306705, 0.189086, 0.323008
+healthPoint: 100
+BOTs: 
+id: 16
+position: 1.25126, 112.717, 193.364
+orientation: 1, 0, 0, 0
+healthPoint: 100
+id: 28
+position: 808.74, 117.002, 479.933
+orientation: 1, 0, 0, 0
+healthPoint: 100
+id: 40
+position: 350.291, 179.192, 822.9
+orientation: 1, 0, 0, 0
+healthPoint: 100
+id: 52
+position: 746.605, 34.8216, 859.003
+orientation: 1, 0, 0, 0
+healthPoint: 100
+id: 64
+position: 710.501, 102.707, 304.055
+orientation: 1, 0, 0, 0
+healthPoint: 100
+obstacles: 
+id: 76
+position: 1000, 400, 800
+radius: 1.7
+id: 77
+position: -1000, -100, 400
+radius: 1.2
+id: 78
+position: 500, -400, -1000
+radius: 0.8

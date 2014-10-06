@@ -23,7 +23,7 @@ material Ogre/Compositor/Red_Blur
 			{
 		            param_named sampleDist float 0.8
 		            param_named sampleStrength float 2.2
-			    param_named_auto time time_0_x 4.0
+			    param_named time float s4.0
 			    param_named timeLimit float 4.0
 			}
 			texture_unit
